@@ -4,6 +4,11 @@ node_modules/
 !.env.example
 .dev.vars
 .prod-secrets.json
+.pages-dist/
+.impeccable/questions/
+.impeccable/mocks/
+.impeccable/review/
+work/
 .wrangler/
 npm-debug.log*
 

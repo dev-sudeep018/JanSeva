@@ -10,12 +10,6 @@
     />
     <title>JanSeva — Public Grievance Tracker</title>
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600;700&family=Lato:wght@400;700;900&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
@@ -120,15 +114,7 @@
             >Service directory
           </button>
         </nav>
-        <div class="sidebar-label admin-label">MANAGEMENT</div>
-        <nav class="side-nav">
-          <button class="nav-item" data-view="admin">
-            <svg class="nav-icon" aria-hidden="true">
-              <use href="#icon-clipboard" /></svg
-            >Officer dashboard
-            <span class="nav-count" id="navOpenCount">0</span>
-          </button>
-        </nav>
+        <span class="nav-count hidden" id="navOpenCount">0</span>
         <div class="sidebar-bottom">
           <div class="help-card">
             <span class="help-orb"
@@ -137,7 +123,10 @@
             ><strong>Need a hand?</strong>
             <p>Find the right service or learn how to raise a concern.</p>
             <button class="text-button" data-view="directory">
-              Explore services <span>↗</span>
+              Explore services
+              <svg class="ui-icon" aria-hidden="true">
+                <use href="#icon-arrow" />
+              </svg>
             </button>
           </div>
           <div class="profile-row">
@@ -172,7 +161,7 @@
             ><strong id="crumbCurrent">Overview</strong>
           </div>
           <div class="topbar-actions">
-            <span class="demo-pill"><span></span> LIVE PORTAL</span
+            <span class="demo-pill"><span></span> INDEPENDENT PROTOTYPE</span
             ><button class="icon-button" id="helpButton" aria-label="Help">
               <svg class="ui-icon" aria-hidden="true">
                 <use href="#icon-help" />
@@ -183,207 +172,186 @@
         </header>
         <div class="page-wrap">
           <section class="view active" id="view-home">
-            <div class="hero-banner">
-              <div class="hero-content">
-                <h1>Your voice matters.<br /><em>We’re here to listen.</em></h1>
+            <section class="ledger-hero">
+              <div class="ledger-intro">
+                <h1>A clear way to put civic concerns on record.</h1>
                 <p>
-                  A clearer, more transparent way to raise public concerns and
-                  follow every step towards resolution.
+                  Raise an issue, receive one reference, and follow every update
+                  from submission to resolution.
                 </p>
-                <div class="hero-actions">
-                  <button class="btn btn-light" data-view="submit">
-                    Raise a grievance <span>↗</span></button
-                  ><button class="btn btn-ghost-light" data-view="track">
-                    Track a request <span>→</span>
+                <div class="service-actions">
+                  <button class="service-action primary" data-view="submit">
+                    <span class="action-icon">
+                      <svg class="ui-icon" aria-hidden="true">
+                        <use href="#icon-plus" />
+                      </svg>
+                    </span>
+                    <span
+                      ><strong>Raise a grievance</strong
+                      ><small>Describe what needs attention</small></span
+                    >
+                    <svg class="action-arrow" aria-hidden="true">
+                      <use href="#icon-arrow" />
+                    </svg>
+                  </button>
+                  <button class="service-action secondary" data-view="track">
+                    <span class="action-icon">
+                      <svg class="ui-icon" aria-hidden="true">
+                        <use href="#icon-search" />
+                      </svg>
+                    </span>
+                    <span
+                      ><strong>Track a grievance</strong
+                      ><small>Return with your JSV reference</small></span
+                    >
+                    <svg class="action-arrow" aria-hidden="true">
+                      <use href="#icon-arrow" />
+                    </svg>
                   </button>
                 </div>
-                <div class="hero-note">
-                  <span class="secure-icon">✓</span> Simple. Transparent.
-                  Accountable.
-                </div>
-              </div>
-              <div class="hero-art" aria-hidden="true">
-                <div class="art-ring ring-one"></div>
-                <div class="art-ring ring-two"></div>
-                <div class="art-glow"></div>
-                <div class="art-card art-card-main">
-                  <div class="art-card-top">
-                    <span class="mini-shield">✓</span
-                    ><span class="art-status">CASE UPDATE</span>
-                  </div>
-                  <strong>Request received</strong
-                  ><span class="art-ref">JSV-2026-1048</span>
-                  <div class="art-progress"><i></i></div>
-                  <div class="art-card-bottom">
-                    <span>Resolution journey</span><b>68%</b>
-                  </div>
-                </div>
-                <div class="floating-chip chip-one">
-                  <span class="chip-check">✓</span
-                  ><span
-                    ><b>Transparent updates</b
-                    ><small>Every step, visible</small></span
-                  >
-                </div>
-                <div class="floating-chip chip-two">
-                  <span class="chip-clock">◷</span
-                  ><span
-                    ><b>One clear reference</b
-                    ><small>Easy to follow up</small></span
-                  >
-                </div>
-                <div class="art-star star-one">✳</div>
-                <div class="art-star star-two">✦</div>
-              </div>
-            </div>
-            <div class="welcome-row">
-              <div>
-                <h2>Public service at a glance</h2>
-                <p class="muted">
-                  A transparent view of the grievance process.
-                </p>
-              </div>
-              <div class="date-chip">
-                <span class="date-dot"></span> Live demo overview
-              </div>
-            </div>
-            <div class="stats-grid">
-              <article class="stat-card">
-                <div class="stat-top">
-                  <span class="stat-icon icon-blue"
-                    ><svg class="ui-icon" aria-hidden="true">
-                      <use href="#icon-clipboard" /></svg></span
-                  ><span class="stat-trend">ALL CASES</span>
-                </div>
-                <div class="stat-number" id="statTotal">0</div>
-                <div class="stat-label">Total grievances</div>
-                <div class="stat-foot">
-                  <span class="tiny-bar bar-blue"></span> All registered
-                  requests
-                </div>
-              </article>
-              <article class="stat-card">
-                <div class="stat-top">
-                  <span class="stat-icon icon-amber"
-                    ><svg class="ui-icon" aria-hidden="true">
-                      <use href="#icon-clock" /></svg></span
-                  ><span class="stat-trend">IN REVIEW</span>
-                </div>
-                <div class="stat-number" id="statPending">0</div>
-                <div class="stat-label">Open & in progress</div>
-                <div class="stat-foot">
-                  <span class="tiny-bar bar-amber"></span> Awaiting resolution
-                </div>
-              </article>
-              <article class="stat-card">
-                <div class="stat-top">
-                  <span class="stat-icon icon-green"
-                    ><svg class="ui-icon" aria-hidden="true">
-                      <use href="#icon-check" /></svg></span
-                  ><span class="stat-trend">COMPLETED</span>
-                </div>
-                <div class="stat-number" id="statResolved">0</div>
-                <div class="stat-label">Resolved cases</div>
-                <div class="stat-foot">
-                  <span class="tiny-bar bar-green"></span> Marked as resolved
-                </div>
-              </article>
-              <article class="stat-card">
-                <div class="stat-top">
-                  <span class="stat-icon icon-violet"
-                    ><svg class="ui-icon" aria-hidden="true">
-                      <use href="#icon-grid" /></svg></span
-                  ><span class="stat-trend">SERVICE AREAS</span>
-                </div>
-                <div class="stat-number">06</div>
-                <div class="stat-label">Service categories</div>
-                <div class="stat-foot">
-                  <span class="tiny-bar bar-violet"></span> One place to get
-                  started
-                </div>
-              </article>
-            </div>
-            <div class="home-grid">
-              <section class="panel recent-panel">
-                <div class="panel-heading">
-                  <div>
-                    <h3>Recently submitted grievances</h3>
-                  </div>
-                  <button class="link-button" data-view="admin">
-                    View all <span>→</span>
-                  </button>
-                </div>
-                <div class="table-wrap">
-                  <table class="data-table">
-                    <thead>
-                      <tr>
-                        <th>REFERENCE</th>
-                        <th>GRIEVANCE</th>
-                        <th>CATEGORY</th>
-                        <th>STATUS</th>
-                      </tr>
-                    </thead>
-                    <tbody id="recentRows"></tbody>
-                  </table>
-                </div>
-                <div class="empty-state hidden" id="recentEmpty">
-                  <span>▤</span><strong>No grievances yet</strong>
-                  <p>Submit a sample grievance to see it appear here.</p>
-                  <button class="btn btn-primary btn-sm" data-view="submit">
-                    Create grievance
-                  </button>
-                </div>
-              </section>
-              <section class="panel quick-panel">
-                <div class="panel-heading">
-                  <div>
-                    <h3>How can we help?</h3>
-                  </div>
-                  <span class="sparkle">✦</span>
-                </div>
-                <button class="quick-action" data-view="submit">
-                  <span class="quick-icon quick-teal"
-                    ><svg class="ui-icon" aria-hidden="true">
-                      <use href="#icon-plus" /></svg></span
-                  ><span
-                    ><b>Raise a new grievance</b
-                    ><small>Tell us what needs attention.</small></span
-                  ><span class="quick-arrow">↗</span>
-                </button>
-                <button class="quick-action" data-view="track">
-                  <span class="quick-icon quick-blue"
-                    ><svg class="ui-icon" aria-hidden="true">
-                      <use href="#icon-search" /></svg></span
-                  ><span
-                    ><b>Check request status</b
-                    ><small>Follow progress using your ID.</small></span
-                  ><span class="quick-arrow">↗</span>
-                </button>
-                <button class="quick-action" data-view="directory">
-                  <span class="quick-icon quick-gold"
-                    ><svg class="ui-icon" aria-hidden="true">
-                      <use href="#icon-grid" /></svg></span
-                  ><span
-                    ><b>Browse service directory</b
-                    ><small>Find the right service category.</small></span
-                  ><span class="quick-arrow">↗</span>
-                </button>
-                <div class="notice-strip">
-                  <span>ⓘ</span>
+                <div class="prototype-note">
+                  <svg class="ui-icon" aria-hidden="true">
+                    <use href="#icon-info" />
+                  </svg>
                   <p>
-                    <b>Independent prototype</b> — records are stored securely
-                    for this demonstration but are not sent to a government
+                    <strong>Independent prototype.</strong> Records are stored
+                    for this demonstration and are not sent to a government
                     department.
                   </p>
                 </div>
-              </section>
-            </div>
-            <div class="trust-row">
-              <span>✦ Built around citizen-first service</span
-              ><span>✓ Clear status updates</span
-              ><span>✓ Reference-based tracking</span
-              ><span>✓ Persistent cloud storage</span>
-            </div>
+                <button
+                  class="saved-shortcut"
+                  id="savedCasesShortcut"
+                  type="button"
+                >
+                  <span>
+                    <svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-clipboard" />
+                    </svg>
+                    My saved cases
+                  </span>
+                  <strong id="savedCaseCount">0 saved</strong>
+                  <svg class="ui-icon" aria-hidden="true">
+                    <use href="#icon-arrow" />
+                  </svg>
+                </button>
+              </div>
+              <div class="case-journey" aria-label="Example grievance journey">
+                <div class="journey-head">
+                  <b>JSV-2026-1048</b>
+                </div>
+                <h2>One record. Every update visible.</h2>
+                <ol class="journey-line">
+                  <li class="complete">
+                    <span></span>
+                    <div>
+                      <b>Received</b><small>Your concern is on record</small>
+                    </div>
+                  </li>
+                  <li class="current">
+                    <span></span>
+                    <div><b>Under review</b><small>Current step</small></div>
+                  </li>
+                  <li>
+                    <span></span>
+                    <div><b>Action underway</b><small>Next update</small></div>
+                  </li>
+                  <li>
+                    <span></span>
+                    <div><b>Resolved</b><small>Final note</small></div>
+                  </li>
+                </ol>
+                <button class="journey-link" data-view="track">
+                  Track your own case
+                  <svg class="ui-icon" aria-hidden="true">
+                    <use href="#icon-arrow" />
+                  </svg>
+                </button>
+              </div>
+            </section>
+
+            <section class="ledger-stats" aria-label="Portal overview">
+              <div>
+                <strong id="statTotal">0</strong><span>Total on record</span>
+              </div>
+              <div>
+                <strong id="statPending">0</strong
+                ><span>Open or in progress</span>
+              </div>
+              <div>
+                <strong id="statResolved">0</strong><span>Marked resolved</span>
+              </div>
+              <button data-view="directory">
+                <strong>6</strong><span>Service areas</span>
+              </button>
+            </section>
+
+            <section class="saved-cases panel" id="savedCasesPanel">
+              <div class="panel-heading saved-heading">
+                <div>
+                  <h2>My saved cases</h2>
+                  <p>References created or checked on this device.</p>
+                </div>
+                <button
+                  class="btn btn-outline btn-sm"
+                  id="refreshSavedCases"
+                  type="button"
+                >
+                  <svg class="ui-icon" aria-hidden="true">
+                    <use href="#icon-clock" />
+                  </svg>
+                  Refresh status
+                </button>
+              </div>
+              <div class="saved-case-list" id="savedCaseRows"></div>
+              <div class="empty-state hidden" id="savedCaseEmpty">
+                <svg class="empty-icon" aria-hidden="true">
+                  <use href="#icon-clipboard" />
+                </svg>
+                <strong>No saved cases on this device</strong>
+                <p>
+                  Create a grievance or track a reference to keep it here for
+                  faster return visits.
+                </p>
+                <button class="btn btn-primary btn-sm" data-view="submit">
+                  Raise a grievance
+                </button>
+              </div>
+            </section>
+
+            <section class="public-ledger panel">
+              <div class="panel-heading">
+                <div>
+                  <h2>Recent records on this device</h2>
+                  <p>
+                    Only references already saved in this browser appear here.
+                  </p>
+                </div>
+                <button class="link-button" data-view="track">
+                  Track another case
+                </button>
+              </div>
+              <div class="table-wrap">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>Reference</th>
+                      <th>Grievance</th>
+                      <th>Category</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody id="recentRows"></tbody>
+                </table>
+              </div>
+              <div class="empty-state hidden" id="recentEmpty">
+                <strong>No recent records yet</strong>
+                <p>
+                  Your saved grievances will appear after you create or track
+                  one.
+                </p>
+              </div>
+            </section>
           </section>
 
           <section class="view" id="view-submit">
@@ -428,6 +396,26 @@
                       <option>Public Health</option>
                       <option>Other Public Services</option>
                     </select>
+                    <div
+                      class="category-suggestion hidden"
+                      id="categorySuggestion"
+                      aria-live="polite"
+                    >
+                      <svg class="ui-icon" aria-hidden="true">
+                        <use href="#icon-info" />
+                      </svg>
+                      <div>
+                        <b id="suggestionTitle">Suggested service</b>
+                        <p id="suggestionReason"></p>
+                        <button
+                          type="button"
+                          id="applySuggestion"
+                          class="link-button"
+                        >
+                          Use this category
+                        </button>
+                      </div>
+                    </div>
                   </div>
                   <div class="field">
                     <label for="area">Area / locality <span>*</span></label
@@ -512,13 +500,19 @@
                   ><button type="reset" class="btn btn-outline">
                     Clear form</button
                   ><button type="submit" class="btn btn-primary">
-                    Submit grievance <span>→</span>
+                    Submit grievance
+                    <svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-arrow" />
+                    </svg>
                   </button>
                 </div>
               </form>
               <aside class="form-aside">
                 <div class="aside-card dark-aside">
-                  <span class="aside-icon">✦</span>
+                  <span class="aside-icon"
+                    ><svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-clipboard" /></svg
+                  ></span>
                   <h3>Your concern deserves to be heard.</h3>
                   <p>
                     Every submission receives a unique reference ID to make
@@ -526,14 +520,20 @@
                   </p>
                   <div class="aside-divider"></div>
                   <div class="aside-point">
-                    <span>✓</span>
+                    <span
+                      ><svg class="ui-icon" aria-hidden="true">
+                        <use href="#icon-check" /></svg
+                    ></span>
                     <div>
                       <b>Keep your reference ID</b
                       ><small>You’ll need it to track your request.</small>
                     </div>
                   </div>
                   <div class="aside-point">
-                    <span>✓</span>
+                    <span
+                      ><svg class="ui-icon" aria-hidden="true">
+                        <use href="#icon-check" /></svg
+                    ></span>
                     <div>
                       <b>Be clear and specific</b
                       ><small
@@ -594,14 +594,16 @@
                 submission details.
               </p>
               <form id="trackForm" class="track-search">
-                <label class="sr-only" for="trackId">Reference ID</label
-                ><span>⌕</span
-                ><input
+                <label class="sr-only" for="trackId">Reference ID</label>
+                <input
                   id="trackId"
                   placeholder="Enter reference ID (e.g. JSV-2026-0001)"
                   required
                 /><button class="btn btn-primary" type="submit">
-                  Track request <span>→</span>
+                  Track request
+                  <svg class="ui-icon" aria-hidden="true">
+                    <use href="#icon-arrow" />
+                  </svg>
                 </button>
               </form>
               <div class="track-hint">
@@ -615,25 +617,37 @@
             ></div>
             <div class="track-help-grid">
               <div class="panel help-tile">
-                <span class="tile-icon">⌁</span>
+                <span class="tile-icon"
+                  ><svg class="ui-icon" aria-hidden="true">
+                    <use href="#icon-clipboard" /></svg
+                ></span>
                 <h3>Lost your reference ID?</h3>
                 <p>
                   Reference IDs are shown after submission and remembered on
                   this device.
                 </p>
                 <button class="link-button" data-view="home">
-                  View recent requests →
+                  View recent requests
+                  <svg class="ui-icon" aria-hidden="true">
+                    <use href="#icon-arrow" />
+                  </svg>
                 </button>
               </div>
               <div class="panel help-tile">
-                <span class="tile-icon">ⓘ</span>
+                <span class="tile-icon"
+                  ><svg class="ui-icon" aria-hidden="true">
+                    <use href="#icon-info" /></svg
+                ></span>
                 <h3>Cloud-backed tracking</h3>
                 <p>
                   Status and history are retrieved securely from the live
                   database.
                 </p>
                 <button class="link-button" data-view="submit">
-                  Create a request →
+                  Create a request
+                  <svg class="ui-icon" aria-hidden="true">
+                    <use href="#icon-arrow" />
+                  </svg>
                 </button>
               </div>
             </div>
@@ -650,9 +664,8 @@
               </div>
             </div>
             <div class="directory-tools">
-              <label class="directory-search"
-                ><span>⌕</span
-                ><input
+              <label class="directory-search">
+                <input
                   id="serviceSearch"
                   placeholder="Search services or keywords..." /></label
               ><span class="results-label" id="serviceCount"
@@ -661,7 +674,9 @@
             </div>
             <div class="service-grid" id="serviceGrid"></div>
             <div class="source-note">
-              <span>ⓘ</span>
+              <svg class="ui-icon" aria-hidden="true">
+                <use href="#icon-info" />
+              </svg>
               <p>
                 <b>Sample service directory.</b> This student prototype provides
                 general guidance only. Confirm procedures and contact details
@@ -677,13 +692,13 @@
                   <use href="#icon-clipboard" />
                 </svg>
               </div>
-              <h1>Officer sign in</h1>
+              <h1>Staff sign in</h1>
               <p>
-                Enter the officer password to review cases and update their
-                status.
+                This protected area is for the people operating the prototype.
+                Staff can review cases, update status, and export records.
               </p>
               <form id="adminLoginForm">
-                <label for="adminPassword">Officer password</label
+                <label for="adminPassword">Staff password</label
                 ><input
                   id="adminPassword"
                   name="password"
@@ -703,7 +718,7 @@
             <div class="hidden" id="adminContent">
               <div class="page-heading admin-heading">
                 <div>
-                  <h1>Officer dashboard</h1>
+                  <h1>Case management</h1>
                   <p>
                     Review cases, update their status, and keep the case
                     lifecycle visible.
@@ -720,43 +735,24 @@
                   </button>
                 </div>
               </div>
-              <div class="admin-stat-grid">
-                <div class="admin-stat">
-                  <span class="admin-stat-icon blue-bg"
-                    ><svg class="ui-icon" aria-hidden="true">
-                      <use href="#icon-clipboard" /></svg
-                  ></span>
-                  <div>
-                    <small>Total cases</small><strong id="adminTotal">0</strong>
-                  </div>
+              <dl class="admin-ledger-summary" aria-label="Case totals">
+                <div>
+                  <dt>Total cases</dt>
+                  <dd id="adminTotal">0</dd>
                 </div>
-                <div class="admin-stat">
-                  <span class="admin-stat-icon amber-bg"
-                    ><svg class="ui-icon" aria-hidden="true">
-                      <use href="#icon-clock" /></svg
-                  ></span>
-                  <div>
-                    <small>Open / in progress</small
-                    ><strong id="adminOpen">0</strong>
-                  </div>
+                <div>
+                  <dt>Open / in progress</dt>
+                  <dd id="adminOpen">0</dd>
                 </div>
-                <div class="admin-stat">
-                  <span class="admin-stat-icon green-bg"
-                    ><svg class="ui-icon" aria-hidden="true">
-                      <use href="#icon-check" /></svg
-                  ></span>
-                  <div>
-                    <small>Resolved</small><strong id="adminResolved">0</strong>
-                  </div>
+                <div>
+                  <dt>Resolved</dt>
+                  <dd id="adminResolved">0</dd>
                 </div>
-                <div class="admin-stat">
-                  <span class="admin-stat-icon red-bg">!</span>
-                  <div>
-                    <small>High priority</small
-                    ><strong id="adminHigh">0</strong>
-                  </div>
+                <div>
+                  <dt>High priority</dt>
+                  <dd id="adminHigh">0</dd>
                 </div>
-              </div>
+              </dl>
               <section class="panel cases-panel">
                 <div class="panel-heading admin-panel-heading">
                   <div>
@@ -770,9 +766,8 @@
                   </button>
                 </div>
                 <div class="case-filters">
-                  <label class="directory-search compact-search"
-                    ><span>⌕</span
-                    ><input
+                  <label class="directory-search compact-search">
+                    <input
                       id="caseSearch"
                       placeholder="Search ID, title or area..." /></label
                   ><select id="statusFilter" aria-label="Filter by status">
@@ -809,13 +804,18 @@
                   </table>
                 </div>
                 <div class="empty-state hidden" id="caseEmpty">
-                  <span>⌕</span><strong>No matching cases</strong>
+                  <svg class="empty-icon" aria-hidden="true">
+                    <use href="#icon-search" /></svg
+                  ><strong>No matching cases</strong>
                   <p>Try changing your search or filters.</p>
                 </div>
               </section>
               <div class="admin-footnote">
-                <span>ⓘ</span> Protected officer access. This independent
-                prototype is not connected to a government department.
+                <svg class="ui-icon" aria-hidden="true">
+                  <use href="#icon-info" />
+                </svg>
+                Protected staff access. This independent prototype is not
+                connected to a government department.
               </div>
             </div>
           </section>
@@ -859,7 +859,10 @@
           ><button id="copyRef" class="copy-button">Copy ID</button>
         </div>
         <button class="btn btn-primary full-btn" id="modalTrack">
-          Track this grievance →</button
+          Track this grievance
+          <svg class="ui-icon" aria-hidden="true">
+            <use href="#icon-arrow" />
+          </svg></button
         ><button class="link-button centered" id="modalHome">
           Back to overview</button
         ><small class="modal-disclaimer"
@@ -868,6 +871,6 @@
         >
       </div>
     </div>
-    <script src="app.js"></script>
+    <script type="module" src="app.js"></script>
   </body>
 </html>

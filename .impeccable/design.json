@@ -1,0 +1,145 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-31T00:55:58.4633242+05:30",
+  "title": "Design System: JanSeva",
+  "extensions": {
+    "colorMeta": {
+      "civic-ink": { "role": "neutral", "displayName": "Civic Ink", "canonical": "#102f3a", "tonalRamp": ["oklch(15% 0.035 220)", "oklch(26% 0.035 220)", "oklch(37% 0.035 220)", "oklch(48% 0.035 220)", "oklch(60% 0.03 220)", "oklch(72% 0.025 220)", "oklch(84% 0.018 220)", "oklch(95% 0.008 220)"] },
+      "civic-ink-raised": { "role": "neutral", "displayName": "Raised Civic Ink", "canonical": "#193f4b", "tonalRamp": ["oklch(15% 0.033 215)", "oklch(26% 0.033 215)", "oklch(37% 0.033 215)", "oklch(48% 0.03 215)", "oklch(60% 0.027 215)", "oklch(72% 0.022 215)", "oklch(84% 0.015 215)", "oklch(95% 0.007 215)"] },
+      "cool-paper": { "role": "neutral", "displayName": "Cool Civic Paper", "canonical": "#f5f4ed", "tonalRamp": ["oklch(15% 0.012 95)", "oklch(26% 0.012 95)", "oklch(37% 0.011 95)", "oklch(48% 0.01 95)", "oklch(60% 0.009 95)", "oklch(72% 0.008 95)", "oklch(84% 0.007 95)", "oklch(95% 0.006 95)"] },
+      "ledger-surface": { "role": "neutral", "displayName": "Ledger Surface", "canonical": "#fffefa", "tonalRamp": ["oklch(15% 0.008 95)", "oklch(26% 0.008 95)", "oklch(37% 0.007 95)", "oklch(48% 0.007 95)", "oklch(60% 0.006 95)", "oklch(72% 0.005 95)", "oklch(84% 0.004 95)", "oklch(95% 0.003 95)"] },
+      "quiet-surface": { "role": "neutral", "displayName": "Quiet Surface", "canonical": "#e9efeb", "tonalRamp": ["oklch(15% 0.018 160)", "oklch(26% 0.018 160)", "oklch(37% 0.017 160)", "oklch(48% 0.016 160)", "oklch(60% 0.014 160)", "oklch(72% 0.012 160)", "oklch(84% 0.01 160)", "oklch(95% 0.006 160)"] },
+      "service-teal": { "role": "primary", "displayName": "Service Teal", "canonical": "#167667", "tonalRamp": ["oklch(15% 0.08 170)", "oklch(26% 0.09 170)", "oklch(37% 0.1 170)", "oklch(48% 0.11 170)", "oklch(60% 0.1 170)", "oklch(72% 0.08 170)", "oklch(84% 0.05 170)", "oklch(95% 0.02 170)"] },
+      "service-teal-deep": { "role": "primary", "displayName": "Deep Service Teal", "canonical": "#0d5b50", "tonalRamp": ["oklch(15% 0.07 170)", "oklch(26% 0.08 170)", "oklch(37% 0.09 170)", "oklch(48% 0.095 170)", "oklch(60% 0.085 170)", "oklch(72% 0.065 170)", "oklch(84% 0.04 170)", "oklch(95% 0.018 170)"] },
+      "service-teal-soft": { "role": "primary", "displayName": "Soft Service Teal", "canonical": "#dcebe6", "tonalRamp": ["oklch(15% 0.04 170)", "oklch(26% 0.045 170)", "oklch(37% 0.05 170)", "oklch(48% 0.05 170)", "oklch(60% 0.045 170)", "oklch(72% 0.037 170)", "oklch(84% 0.028 170)", "oklch(95% 0.012 170)"] },
+      "attention-brass": { "role": "secondary", "displayName": "Attention Brass", "canonical": "#c89d3b", "tonalRamp": ["oklch(15% 0.07 80)", "oklch(26% 0.09 80)", "oklch(37% 0.11 80)", "oklch(48% 0.13 80)", "oklch(60% 0.14 80)", "oklch(72% 0.11 80)", "oklch(84% 0.07 80)", "oklch(95% 0.025 80)"] },
+      "attention-brass-soft": { "role": "secondary", "displayName": "Soft Attention Brass", "canonical": "#f3e8c8", "tonalRamp": ["oklch(15% 0.045 80)", "oklch(26% 0.06 80)", "oklch(37% 0.07 80)", "oklch(48% 0.075 80)", "oklch(60% 0.07 80)", "oklch(72% 0.055 80)", "oklch(84% 0.04 80)", "oklch(95% 0.016 80)"] },
+      "copy-muted": { "role": "neutral", "displayName": "Muted Copy", "canonical": "#52666b", "tonalRamp": ["oklch(15% 0.018 210)", "oklch(26% 0.02 210)", "oklch(37% 0.022 210)", "oklch(48% 0.022 210)", "oklch(60% 0.02 210)", "oklch(72% 0.016 210)", "oklch(84% 0.011 210)", "oklch(95% 0.005 210)"] },
+      "ledger-rule": { "role": "neutral", "displayName": "Ledger Rule", "canonical": "#cdd6d2", "tonalRamp": ["oklch(15% 0.012 165)", "oklch(26% 0.014 165)", "oklch(37% 0.015 165)", "oklch(48% 0.015 165)", "oklch(60% 0.014 165)", "oklch(72% 0.012 165)", "oklch(84% 0.009 165)", "oklch(95% 0.004 165)"] },
+      "ledger-rule-strong": { "role": "neutral", "displayName": "Strong Ledger Rule", "canonical": "#8fa19c", "tonalRamp": ["oklch(15% 0.018 165)", "oklch(26% 0.022 165)", "oklch(37% 0.025 165)", "oklch(48% 0.026 165)", "oklch(60% 0.024 165)", "oklch(72% 0.019 165)", "oklch(84% 0.013 165)", "oklch(95% 0.006 165)"] },
+      "danger": { "role": "tertiary", "displayName": "Civic Danger", "canonical": "#a33939", "tonalRamp": ["oklch(15% 0.08 25)", "oklch(26% 0.11 25)", "oklch(37% 0.14 25)", "oklch(48% 0.16 25)", "oklch(60% 0.14 25)", "oklch(72% 0.1 25)", "oklch(84% 0.06 25)", "oklch(95% 0.02 25)"] },
+      "danger-soft": { "role": "tertiary", "displayName": "Soft Civic Danger", "canonical": "#f7e7e3", "tonalRamp": ["oklch(15% 0.04 25)", "oklch(26% 0.055 25)", "oklch(37% 0.065 25)", "oklch(48% 0.07 25)", "oklch(60% 0.06 25)", "oklch(72% 0.045 25)", "oklch(84% 0.03 25)", "oklch(95% 0.012 25)"] },
+      "success": { "role": "tertiary", "displayName": "Resolved Green", "canonical": "#147256", "tonalRamp": ["oklch(15% 0.07 155)", "oklch(26% 0.09 155)", "oklch(37% 0.11 155)", "oklch(48% 0.12 155)", "oklch(60% 0.105 155)", "oklch(72% 0.08 155)", "oklch(84% 0.05 155)", "oklch(95% 0.018 155)"] },
+      "warning": { "role": "tertiary", "displayName": "Ledger Warning", "canonical": "#8a621c", "tonalRamp": ["oklch(15% 0.065 75)", "oklch(26% 0.085 75)", "oklch(37% 0.105 75)", "oklch(48% 0.12 75)", "oklch(60% 0.11 75)", "oklch(72% 0.085 75)", "oklch(84% 0.052 75)", "oklch(95% 0.018 75)"] },
+      "focus": { "role": "primary", "displayName": "Focus Teal", "canonical": "#0a7568", "tonalRamp": ["oklch(15% 0.075 175)", "oklch(26% 0.09 175)", "oklch(37% 0.105 175)", "oklch(48% 0.115 175)", "oklch(60% 0.105 175)", "oklch(72% 0.08 175)", "oklch(84% 0.05 175)", "oklch(95% 0.018 175)"] },
+      "white": { "role": "neutral", "displayName": "Pure White", "canonical": "#ffffff", "tonalRamp": ["oklch(15% 0 0)", "oklch(26% 0 0)", "oklch(37% 0 0)", "oklch(48% 0 0)", "oklch(60% 0 0)", "oklch(72% 0 0)", "oklch(84% 0 0)", "oklch(95% 0 0)"] }
+    },
+    "typographyMeta": {
+      "display": { "displayName": "Civic Display", "purpose": "Home promise and the largest public-facing statements." },
+      "headline": { "displayName": "Task Headline", "purpose": "Page-level task headings and dark-surface introductions." },
+      "title": { "displayName": "Ledger Title", "purpose": "Panel, form-section, and record-card headings." },
+      "body": { "displayName": "Service Body", "purpose": "Instructions, controls, record content, and recovery copy." },
+      "label": { "displayName": "System Label", "purpose": "Table headers, workspace labels, and compact metadata." }
+    },
+    "shadows": [
+      { "name": "featured-record", "value": "0 20px 42px rgba(16, 47, 58, 0.14)", "purpose": "Ambient lift for the signature case-journey sheet only." },
+      { "name": "toast", "value": "0 10px 24px rgba(16, 47, 58, 0.22)", "purpose": "Short-lived system feedback above the ledger." },
+      { "name": "modal", "value": "0 24px 58px rgba(7, 27, 33, 0.3)", "purpose": "Blocking confirmation and completion surfaces." }
+    ],
+    "motion": [
+      { "name": "view-entry", "value": "420ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "A 10px upward settle with a brief fade and blur when changing views." },
+      { "name": "ledger-draw", "value": "480ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Draws case-history rules from the top to explain sequence." },
+      { "name": "state-settle", "value": "420ms cubic-bezier(0.16, 1, 0.3, 1)", "purpose": "Settles timeline nodes in 120ms increments." },
+      { "name": "control-state", "value": "160ms ease-out", "purpose": "Fast hover and focus response for fields, rows, and cards." },
+      { "name": "reduced-motion", "value": "0.01ms", "purpose": "Effectively removes all animation and transition when reduced motion is requested." }
+    ],
+    "breakpoints": [
+      { "name": "compact-desktop", "value": "1180px" },
+      { "name": "tablet-shell", "value": "960px" },
+      { "name": "mobile-ledger", "value": "700px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Service Action",
+      "kind": "button",
+      "refersTo": "service-action-primary",
+      "description": "The dominant resident action for raising a grievance.",
+      "html": "<button class=\"ds-service-primary\"><span class=\"ds-action-icon\">+</span><span><strong>Raise a grievance</strong><small>Describe what needs attention</small></span><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14m-6-6 6 6-6 6\"/></svg></button>",
+      "css": ".ds-service-primary { display:grid; width:100%; min-height:118px; grid-template-columns:auto 1fr auto; align-items:center; gap:16px; padding:22px; border:1px solid var(--teal,#167667); border-radius:var(--radius,14px); background:var(--teal,#167667); color:#fff; font:400 16px/1.4 var(--font-ui,'Lato',Arial,sans-serif); text-align:left; transition:background 180ms ease-out,border-color 180ms ease-out,transform 180ms ease-out; } .ds-service-primary strong,.ds-service-primary small { display:block; } .ds-service-primary strong { font-weight:780; } .ds-service-primary small { margin-top:4px; font-size:12px; opacity:.78; } .ds-service-primary svg { width:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; } .ds-action-icon { display:grid; width:38px; height:38px; place-items:center; border-radius:10px; background:rgba(255,255,255,.12); font-size:22px; } .ds-service-primary:hover { border-color:var(--teal-dark,#0d5b50); background:var(--teal-dark,#0d5b50); transform:translateY(-2px); } .ds-service-primary:focus-visible { outline:3px solid var(--focus,#0a7568); outline-offset:3px; } .ds-service-primary:active { transform:translateY(0); }"
+    },
+    {
+      "name": "Track Service Action",
+      "kind": "button",
+      "description": "The secondary resident action, deliberately quieter than raise.",
+      "html": "<button class=\"ds-service-secondary\"><span class=\"ds-action-icon\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"7\"/><path d=\"m20 20-4-4\"/></svg></span><span><strong>Track a grievance</strong><small>Return with your JSV reference</small></span><svg class=\"ds-arrow\" viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14m-6-6 6 6-6 6\"/></svg></button>",
+      "css": ".ds-service-secondary { display:grid; width:100%; min-height:118px; grid-template-columns:auto 1fr auto; align-items:center; gap:16px; padding:22px; border:1px solid var(--line-dark,#8fa19c); border-radius:var(--radius,14px); background:transparent; color:var(--ink,#102f3a); font:400 16px/1.4 var(--font-ui,'Lato',Arial,sans-serif); text-align:left; transition:background 180ms ease-out,border-color 180ms ease-out,transform 180ms ease-out; } .ds-service-secondary strong,.ds-service-secondary small { display:block; } .ds-service-secondary strong { font-weight:780; } .ds-service-secondary small { margin-top:4px; font-size:12px; color:var(--muted,#52666b); } .ds-service-secondary svg { width:19px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; } .ds-service-secondary .ds-action-icon { display:grid; width:38px; height:38px; place-items:center; border-radius:10px; background:rgba(16,47,58,.08); } .ds-service-secondary .ds-arrow { width:18px; } .ds-service-secondary:hover { border-color:var(--teal-dark,#0d5b50); background:var(--surface,#fffefa); transform:translateY(-2px); } .ds-service-secondary:focus-visible { outline:3px solid var(--focus,#0a7568); outline-offset:3px; } .ds-service-secondary:active { transform:translateY(0); }"
+    },
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The compact leading action used in forms and recovery states.",
+      "html": "<button class=\"ds-btn-primary\">Submit grievance <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"M5 12h14m-6-6 6 6-6 6\"/></svg></button>",
+      "css": ".ds-btn-primary { display:inline-flex; min-height:46px; align-items:center; justify-content:center; gap:9px; padding:0 20px; border:1px solid transparent; border-radius:9px; background:var(--teal,#167667); color:#fff; font:760 16px/1.2 var(--font-ui,'Lato',Arial,sans-serif); transition:background 170ms ease-out,transform 170ms ease-out; } .ds-btn-primary svg { width:18px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; } .ds-btn-primary:hover { background:var(--teal-dark,#0d5b50); transform:translateY(-1px); } .ds-btn-primary:focus-visible { outline:3px solid var(--focus,#0a7568); outline-offset:3px; } .ds-btn-primary:active { transform:translateY(0); }"
+    },
+    {
+      "name": "Reference Field",
+      "kind": "input",
+      "refersTo": "field",
+      "description": "A clear 48px ledger field for case references and form data.",
+      "html": "<label class=\"ds-field\"><span>Reference ID</span><input value=\"JSV-2026-1048\" aria-label=\"Reference ID\"></label>",
+      "css": ".ds-field { display:grid; gap:8px; color:var(--ink,#102f3a); font:760 13px/1.2 var(--font-ui,'Lato',Arial,sans-serif); } .ds-field input { width:100%; min-height:48px; padding:12px 14px; border:1px solid var(--line-dark,#8fa19c); border-radius:9px; background:#fff; color:var(--ink,#102f3a); font:400 16px/1.55 var(--font-ui,'Lato',Arial,sans-serif); font-variant-numeric:tabular-nums; transition:border-color 160ms ease-out,box-shadow 160ms ease-out; } .ds-field input:hover { border-color:var(--teal-dark,#0d5b50); } .ds-field input:focus { border-color:var(--focus,#0a7568); outline:0; box-shadow:0 0 0 3px rgba(10,117,104,.18); }"
+    },
+    {
+      "name": "Active Rail Item",
+      "kind": "nav",
+      "description": "The selected state inside the deep-ink service rail.",
+      "html": "<button class=\"ds-nav-active\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m3 11 9-8 9 8\"/><path d=\"M5 10v10h14V10\"/><path d=\"M9 20v-6h6v6\"/></svg>Overview</button>",
+      "css": ".ds-nav-active { display:flex; width:100%; min-height:48px; align-items:center; gap:12px; padding:11px 13px; border:0; border-radius:10px; background:#f0c55f; color:#183639; font:750 16px/1.3 var(--font-ui,'Lato',Arial,sans-serif); text-align:left; transition:filter 180ms ease-out,transform 180ms ease-out; } .ds-nav-active svg { width:19px; height:19px; fill:none; stroke:currentColor; stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round; } .ds-nav-active:hover { filter:brightness(.97); transform:translateX(1px); } .ds-nav-active:focus-visible { outline:3px solid var(--focus,#0a7568); outline-offset:3px; } .ds-nav-active:active { transform:translateX(0); }"
+    },
+    {
+      "name": "Progress Status",
+      "kind": "chip",
+      "refersTo": "status-progress",
+      "description": "A named, color-supported progress state for case rows.",
+      "html": "<span class=\"ds-status-progress\">IN PROGRESS</span>",
+      "css": ".ds-status-progress { display:inline-flex; min-height:28px; align-items:center; padding:0 10px; border-radius:999px; background:var(--brass-soft,#f3e8c8); color:#694a0e; font:800 10px/1.2 var(--font-ui,'Lato',Arial,sans-serif); letter-spacing:.04em; white-space:nowrap; }"
+    },
+    {
+      "name": "Case Journey",
+      "kind": "custom",
+      "refersTo": "panel",
+      "description": "The signature ledger sheet that makes a case history visible as one calm line.",
+      "html": "<article class=\"ds-case-journey\"><div class=\"ds-case-ref\">JSV-2026-1048</div><h2>One record. Every update visible.</h2><ol><li class=\"ds-complete\"><i></i><span><b>Received</b><small>Your concern is on record</small></span></li><li class=\"ds-current\"><i></i><span><b>Under review</b><small>Current step</small></span></li><li><i></i><span><b>Action underway</b><small>Next update</small></span></li></ol></article>",
+      "css": ".ds-case-journey { position:relative; max-width:460px; padding:34px; border-radius:14px; background:var(--surface,#fffefa); color:var(--ink,#102f3a); box-shadow:0 20px 42px rgba(16,47,58,.14); } .ds-case-journey::after { position:absolute; right:34px; bottom:-12px; left:34px; height:12px; border-radius:0 0 12px 12px; background:var(--brass,#c89d3b); content:''; } .ds-case-ref { padding-bottom:20px; border-bottom:1px solid var(--line,#cdd6d2); color:var(--teal-dark,#0d5b50); font:800 11px/1.2 var(--font-ui,'Lato',Arial,sans-serif); letter-spacing:.11em; text-align:right; font-variant-numeric:tabular-nums; } .ds-case-journey h2 { margin:30px 0; font:700 36px/1.05 var(--font-display,'EB Garamond',Georgia,serif); letter-spacing:-.025em; } .ds-case-journey ol { margin:0; padding:0; list-style:none; } .ds-case-journey li { position:relative; display:grid; min-height:70px; grid-template-columns:26px 1fr; gap:15px; font-family:var(--font-ui,'Lato',Arial,sans-serif); } .ds-case-journey li:not(:last-child)::after { position:absolute; top:18px; bottom:-5px; left:11px; width:2px; background:var(--line,#cdd6d2); content:''; transform-origin:top; animation:ds-ledger-draw 480ms cubic-bezier(.16,1,.3,1) both; } .ds-case-journey i { z-index:2; width:14px; height:14px; margin:5px 0 0 5px; border:2px solid var(--line-dark,#8fa19c); border-radius:50%; background:var(--surface,#fffefa); animation:ds-state-settle 420ms cubic-bezier(.16,1,.3,1) both; } .ds-case-journey b,.ds-case-journey small { display:block; } .ds-case-journey b { font-size:14px; } .ds-case-journey small { margin-top:3px; color:var(--muted,#52666b); } .ds-case-journey .ds-complete i { border-color:var(--success,#147256); background:var(--success,#147256); } .ds-case-journey .ds-current i { border:4px solid var(--brass-soft,#f3e8c8); outline:2px solid var(--brass,#c89d3b); background:var(--brass,#c89d3b); } @keyframes ds-ledger-draw { from { transform:scaleY(0); } } @keyframes ds-state-settle { from { opacity:.25; transform:translateY(-7px) scale(.78); } } @media (prefers-reduced-motion:reduce) { .ds-case-journey *,.ds-case-journey *::before,.ds-case-journey *::after { animation-duration:.01ms!important; transition-duration:.01ms!important; } }"
+    }
+  ],
+  "narrative": {
+    "northStar": "Civic Service Ledger",
+    "overview": "JanSeva behaves like a clear, well-kept public record rather than a generic software dashboard. A deep ink service rail anchors broad sheets of cool civic paper; ruled divisions, tabular references, and an authored case-history line make state feel durable and inspectable. The tone is calm, respectful, and precise without borrowing the ceremonial language of an official institution.\n\nThe system puts action before chrome. Service teal is concentrated on the strongest next step, while brass marks attention and current state. Large EB Garamond statements provide civic gravity; Lato keeps controls, records, and recovery copy plain. Density stays moderate, whitespace remains generous, and motion explains arrival or state rather than decorating it.",
+    "keyCharacteristics": [
+      "Deep ink navigation against cool, lightly ruled paper.",
+      "Unequal raise and track actions that make the primary task unmistakable.",
+      "Ledger-like references, tables, timelines, and status markers.",
+      "Selective lift reserved for the featured record, transient feedback, and modals.",
+      "Self-hosted EB Garamond and Lato, with tabular numerals for references and counts.",
+      "Restrained, directional motion with a complete reduced-motion path."
+    ],
+    "rules": [
+      { "name": "The Scarce Teal Rule", "body": "Service teal identifies an action or a meaningful current state; it is not a decorative wash.", "section": "colors" },
+      { "name": "The Brass Means Attention Rule", "body": "Brass marks selection, progression, or a deliberate civic cue. Never use it as a second primary action color.", "section": "colors" },
+      { "name": "The Paper, Not White Rule", "body": "The application ground remains cool paper, while near-white is reserved for raised or bounded ledger surfaces.", "section": "colors" },
+      { "name": "The Authority and Utility Rule", "body": "EB Garamond speaks for promises and record headings; Lato operates the service.", "section": "typography" },
+      { "name": "The Reference Is Data Rule", "body": "Case IDs, dates, and counts use tabular numerals and remain visually distinct from prose.", "section": "typography" },
+      { "name": "The Ledger Is Flat Rule", "body": "Ordinary panels, forms, tables, and service cards use a rule and a paper shift, not a shadow.", "section": "elevation" },
+      { "name": "The Lift Has Meaning Rule", "body": "Elevation signals a featured record, transient feedback, or a blocking layer; it never exists solely to make a surface look premium.", "section": "elevation" }
+    ],
+    "dos": [
+      "Do lead every surface with the resident's next action and a plain explanation of what follows.",
+      "Do use broad rules, aligned rows, and tabular references to make case history feel durable and inspectable.",
+      "Do preserve the unequal visual weight of raise and track actions.",
+      "Do keep prototype disclosure visible wherever the service could be mistaken for an official channel.",
+      "Do pair every status color with a readable label, and preserve 44px minimum touch targets and visible focus.",
+      "Do keep entry and ledger-line motion restrained, directional, and fully removable through reduced motion."
+    ],
+    "donts": [
+      "Don't turn the interface into an equal-card dashboard or add decorative metric tiles to fill space.",
+      "Don't use gradients, glass effects, ornamental government motifs, or institutional seals.",
+      "Don't spread teal across passive surfaces or use brass as a competing call-to-action color.",
+      "Don't add shadows to ordinary panels, fields, tables, or service cards.",
+      "Don't replace the serif-and-sans hierarchy with a single generic UI face.",
+      "Don't hide recovery, status, privacy, or prototype limits behind color, hover, or secondary navigation."
+    ]
+  }
+}

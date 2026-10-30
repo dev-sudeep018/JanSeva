@@ -1,3 +1,5 @@
+import { normalizeSavedReferences, suggestCategory } from "./features.js";
+
 const $ = (selector, root = document) => root.querySelector(selector);
 const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
 const REFERENCE_STORE = "janseva_reference_ids_v2";
@@ -93,21 +95,47 @@ function shortDate(value) {
 function storedReferences() {
   try {
     const value = JSON.parse(localStorage.getItem(REFERENCE_STORE) || "[]");
-    return Array.isArray(value)
-      ? value.filter((id) => typeof id === "string").slice(0, 20)
-      : [];
+    return normalizeSavedReferences(value);
   } catch {
     return [];
   }
 }
 
 function rememberReference(id) {
-  const references = [
+  const references = normalizeSavedReferences([
     id,
     ...storedReferences().filter((value) => value !== id),
-  ].slice(0, 20);
+  ]);
   localStorage.setItem(REFERENCE_STORE, JSON.stringify(references));
 }
+
+let suggestedCategory = null;
+
+function updateCategorySuggestion() {
+  const text = `${$("#subject")?.value || ""} ${$("#description")?.value || ""}`;
+  const suggestion = suggestCategory(text);
+  const panel = $("#categorySuggestion");
+  if (!panel) return;
+
+  suggestedCategory = suggestion?.category || null;
+  const alreadySelected = $("#category")?.value === suggestedCategory;
+  panel.classList.toggle("hidden", !suggestion || alreadySelected);
+  if (!suggestion || alreadySelected) return;
+
+  $("#suggestionTitle").textContent = `Suggested: ${suggestion.category}`;
+  $("#suggestionReason").textContent =
+    `${suggestion.reason} You can keep your own selection.`;
+}
+
+$("#subject")?.addEventListener("input", updateCategorySuggestion);
+$("#description")?.addEventListener("input", updateCategorySuggestion);
+$("#category")?.addEventListener("change", updateCategorySuggestion);
+$("#applySuggestion")?.addEventListener("click", () => {
+  if (!suggestedCategory) return;
+  $("#category").value = suggestedCategory;
+  updateCategorySuggestion();
+  toast(`Service category set to ${suggestedCategory}.`);
+});
 
 async function api(path, options = {}) {
   const controller = new AbortController();
@@ -165,7 +193,7 @@ function navigate(view) {
     submit: "Submit a grievance",
     track: "Track a grievance",
     directory: "Service directory",
-    admin: "Officer dashboard",
+    admin: "Staff console",
   };
   $("#crumbCurrent").textContent = names[view] || "Overview";
   $("#sidebar").classList.remove("open");
@@ -203,7 +231,10 @@ $("#description")?.addEventListener(
     ($("#charCount").textContent = `${event.target.value.length} / 1200`),
 );
 $("#grievanceForm")?.addEventListener("reset", () =>
-  setTimeout(() => ($("#charCount").textContent = "0 / 1200"), 0),
+  setTimeout(() => {
+    $("#charCount").textContent = "0 / 1200";
+    updateCategorySuggestion();
+  }, 0),
 );
 
 $("#grievanceForm")?.addEventListener("submit", async (event) => {
@@ -247,7 +278,7 @@ $("#grievanceForm")?.addEventListener("submit", async (event) => {
   } finally {
     submit.disabled = false;
     form.removeAttribute("aria-busy");
-    submit.innerHTML = "Submit grievance <span>→</span>";
+    submit.innerHTML = `Submit grievance ${iconMarkup("arrow")}`;
   }
 });
 
@@ -288,9 +319,9 @@ $("#copyRef")?.addEventListener("click", async () => {
 });
 
 function renderTrackingResult(grievance) {
-  return `<div class="panel-heading"><div><div class="section-kicker">GRIEVANCE DETAILS</div><h3>${esc(grievance.subject)}</h3></div>${statusPill(grievance.status)}</div>
+  return `<div class="panel-heading"><div><h3>${esc(grievance.subject)}</h3><span class="case-ref">${esc(grievance.id)}</span></div>${statusPill(grievance.status)}</div>
     <div class="track-help-grid"><div><small class="muted">REFERENCE ID</small><p><b>${esc(grievance.id)}</b></p></div><div><small class="muted">CATEGORY</small><p><b>${esc(grievance.category)}</b></p></div><div><small class="muted">LOCATION</small><p><b>${esc(grievance.area)}</b></p></div><div><small class="muted">SUBMITTED</small><p><b>${shortDate(grievance.createdAt)}</b></p></div></div>
-    <hr style="border:0;border-top:1px solid #edf1f1;margin:18px 0"><div class="section-kicker">STATUS HISTORY</div><div style="display:grid;gap:12px;margin-top:14px">${(grievance.history || []).map((history) => `<div style="display:flex;gap:12px"><span style="color:#0d8b7b">●</span><div><b style="font-size:11px">${esc(history.status)}</b><div class="muted" style="font-size:10px">${shortDate(history.date)} — ${esc(history.note || "Status updated.")}</div></div></div>`).join("")}</div>`;
+    <div class="status-history"><h4>Status history</h4>${(grievance.history || []).map((history, index) => `<div class="history-item ${index === 0 ? "latest" : ""}"><span></span><div><b>${esc(history.status)}</b><p>${shortDate(history.date)} · ${esc(history.note || "Status updated.")}</p></div></div>`).join("")}</div>`;
 }
 
 $("#trackForm")?.addEventListener("submit", async (event) => {
@@ -308,7 +339,7 @@ $("#trackForm")?.addEventListener("submit", async (event) => {
     output.innerHTML = renderTrackingResult(grievance);
     await loadTrackedCases();
   } catch (error) {
-    output.innerHTML = `<div class="empty-state"><span>⌕</span><strong>No grievance found</strong><p>${esc(error.message)}</p></div>`;
+    output.innerHTML = `<div class="empty-state">${iconMarkup("search")}<strong>No grievance found</strong><p>${esc(error.message)}</p></div>`;
   }
 });
 
@@ -321,7 +352,53 @@ function renderRecent() {
     )
     .join("");
   $("#recentEmpty").classList.toggle("hidden", list.length > 0);
+  renderSavedCases();
 }
+
+function renderSavedCases() {
+  const container = $("#savedCaseRows");
+  const empty = $("#savedCaseEmpty");
+  if (!container || !empty) return;
+
+  container.innerHTML = trackedCases
+    .map(
+      (grievance) =>
+        `<button class="saved-case" type="button" data-track-reference="${esc(grievance.id)}"><span class="saved-reference"><b>${esc(grievance.id)}</b><small>${shortDate(grievance.createdAt)}</small></span><span class="saved-subject">${esc(grievance.subject)}</span>${statusPill(grievance.status)}<svg class="ui-icon" aria-hidden="true"><use href="#icon-arrow"></use></svg></button>`,
+    )
+    .join("");
+  empty.classList.toggle("hidden", trackedCases.length > 0);
+  if ($("#savedCaseCount")) {
+    $("#savedCaseCount").textContent = trackedCases.length
+      ? `${trackedCases.length} saved`
+      : "None yet";
+  }
+}
+
+$("#savedCasesShortcut")?.addEventListener("click", () => {
+  navigate("home");
+  $("#savedCasesPanel")?.scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+$("#savedCaseRows")?.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-track-reference]");
+  if (!button) return;
+  $("#trackId").value = button.dataset.trackReference;
+  navigate("track");
+  $("#trackForm").requestSubmit();
+});
+
+$("#refreshSavedCases")?.addEventListener("click", async (event) => {
+  const button = event.currentTarget;
+  button.disabled = true;
+  button.setAttribute("aria-busy", "true");
+  try {
+    await loadTrackedCases();
+    toast("Saved case statuses refreshed.");
+  } finally {
+    button.disabled = false;
+    button.removeAttribute("aria-busy");
+  }
+});
 
 async function loadTrackedCases() {
   const results = await Promise.all(
@@ -436,7 +513,7 @@ $("#adminLoginForm")?.addEventListener("submit", async (event) => {
     form.reset();
     showAdminContent();
     await loadAdminCases();
-    toast("Officer session started.");
+    toast("Staff session started.");
   } catch (error) {
     $("#adminLoginError").textContent = error.message;
   } finally {
@@ -450,7 +527,7 @@ $("#adminLogout")?.addEventListener("click", async () => {
     () => undefined,
   );
   showAdminLogin();
-  toast("Officer session ended.");
+  toast("Staff session ended.");
 });
 
 let searchTimer;
@@ -511,7 +588,7 @@ function renderDirectory() {
   $("#serviceGrid").innerHTML = list
     .map(
       (category) =>
-        `<article class="service-card"><div class="service-icon">${iconMarkup(category.icon)}</div><h2>${category.name}</h2><p>${category.desc}</p><button class="link-button" data-service="${esc(category.name)}">Raise a request ↗</button></article>`,
+        `<article class="service-card"><div class="service-icon">${iconMarkup(category.icon)}</div><h2>${category.name}</h2><p>${category.desc}</p><button class="link-button" data-service="${esc(category.name)}">Raise a request ${iconMarkup("arrow")}</button></article>`,
     )
     .join("");
   $("#serviceGrid")
@@ -563,3 +640,8 @@ renderDirectory();
 renderRecent();
 renderAdminStats();
 Promise.all([loadStats(), loadTrackedCases()]);
+
+if (window.location.hash === "#staff") navigate("admin");
+window.addEventListener("hashchange", () => {
+  if (window.location.hash === "#staff") navigate("admin");
+});
