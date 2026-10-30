@@ -20,6 +20,7 @@
 html {
   scroll-behavior: smooth;
   scrollbar-color: #8db8b4 #edf3f3;
+  overflow-x: clip;
 }
 body {
   margin: 0;
@@ -29,6 +30,7 @@ body {
   font-size: 16px;
   line-height: 1.6;
   text-rendering: optimizeLegibility;
+  overflow-x: clip;
 }
 ::selection {
   background: #bce9df;
