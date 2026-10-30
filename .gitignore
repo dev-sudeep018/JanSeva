@@ -2,5 +2,8 @@ node_modules/
 .env
 .env.*
 !.env.example
+.dev.vars
+.prod-secrets.json
+.wrangler/
 npm-debug.log*
 

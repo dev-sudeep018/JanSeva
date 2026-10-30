@@ -1,21 +1,22 @@
 {
   "name": "janseva-premium-ui-upgrade",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Production-ready JanSeva grievance portal on Cloudflare Workers and D1",
+  "main": "worker/index.js",
   "scripts": {
-    "start": "node janseva-premium/server.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "wrangler dev --local",
+    "start": "wrangler dev --local",
+    "db:migrate:local": "wrangler d1 migrations apply DB --local",
+    "db:migrate:remote": "wrangler d1 migrations apply DB --remote",
+    "deploy": "wrangler deploy",
+    "check": "node --check worker/index.js && node --check janseva-premium/app.js && wrangler deploy --dry-run",
+    "test": "node --test tests/*.test.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
-  "dependencies": {
-    "cors": "^2.8.6",
-    "dotenv": "^18.0.9",
-    "express": "^5.3.0",
-    "mongodb": "^7.7.0",
-    "mongoose": "^9.11.4"
+  "type": "module",
+  "devDependencies": {
+    "wrangler": "^4.156.0"
   }
 }

@@ -1,42 +1,565 @@
-const $ = (s, root=document) => root.querySelector(s);
-const $$ = (s, root=document) => [...root.querySelectorAll(s)];
-const STORE = "janseva_grievances_v1";
+const $ = (selector, root = document) => root.querySelector(selector);
+const $$ = (selector, root = document) => [...root.querySelectorAll(selector)];
+const REFERENCE_STORE = "janseva_reference_ids_v2";
 const categories = [
- {name:"Roads & Infrastructure",icon:"⌁",desc:"Potholes, damaged roads, footpaths, drainage and public infrastructure.",hint:"Mention the road name, nearest landmark and approximate location."},
- {name:"Water Supply",icon:"≈",desc:"Water interruptions, leaking pipes, low pressure and supply concerns.",hint:"Include the affected street, timing and type of water issue."},
- {name:"Sanitation & Waste",icon:"♧",desc:"Garbage collection, overflowing bins, public cleanliness and waste disposal.",hint:"Share the location and how long the issue has continued."},
- {name:"Street Lighting",icon:"☼",desc:"Non-working streetlights, dark public areas and damaged lighting.",hint:"Add a pole number or nearby landmark if available."},
- {name:"Public Health",icon:"✚",desc:"Public hygiene concerns, stagnant water and environmental health risks.",hint:"Describe the concern and public area affected; avoid sensitive personal data."},
- {name:"Other Public Services",icon:"▦",desc:"Other civic issues that do not fit the listed categories.",hint:"Describe the service and responsible public location as clearly as possible."}
+  {
+    name: "Roads & Infrastructure",
+    icon: "road",
+    desc: "Potholes, damaged roads, footpaths, drainage and public infrastructure.",
+    hint: "Mention the road name, nearest landmark and approximate location.",
+  },
+  {
+    name: "Water Supply",
+    icon: "water",
+    desc: "Water interruptions, leaking pipes, low pressure and supply concerns.",
+    hint: "Include the affected street, timing and type of water issue.",
+  },
+  {
+    name: "Sanitation & Waste",
+    icon: "waste",
+    desc: "Garbage collection, overflowing bins, public cleanliness and waste disposal.",
+    hint: "Share the location and how long the issue has continued.",
+  },
+  {
+    name: "Street Lighting",
+    icon: "light",
+    desc: "Non-working streetlights, dark public areas and damaged lighting.",
+    hint: "Add a pole number or nearby landmark if available.",
+  },
+  {
+    name: "Public Health",
+    icon: "plus",
+    desc: "Public hygiene concerns, stagnant water and environmental health risks.",
+    hint: "Describe the concern and public area affected; avoid sensitive personal data.",
+  },
+  {
+    name: "Other Public Services",
+    icon: "grid",
+    desc: "Other civic issues that do not fit the listed categories.",
+    hint: "Describe the service and responsible public location as clearly as possible.",
+  },
 ];
-let cases = loadCases();
-function loadCases(){try{return JSON.parse(localStorage.getItem(STORE)||"[]")}catch{return []}}
-function saveCases(){localStorage.setItem(STORE,JSON.stringify(cases));renderAll()}
-function esc(v=""){return String(v).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
-function toast(message){const el=document.createElement("div");el.className="toast";el.textContent=message;$("#toastRegion").append(el);setTimeout(()=>el.remove(),3200)}
-function statusClass(s){if(s==="Resolved")return"status-resolved";if(s==="In Progress"||s==="Awaiting Information")return"status-progress";if(s==="Closed")return"status-closed";return""}
-function statusPill(s){return `<span class="status-pill ${statusClass(s)}">${esc(s)}</span>`}
-function shortDate(v){return new Date(v).toLocaleDateString("en-IN",{day:"2-digit",month:"short",year:"numeric"})}
-function newId(){const year=new Date().getFullYear();let id;do{id=`JSV-${year}-${String(Math.floor(1000+Math.random()*9000))}`}while(cases.some(c=>c.id===id));return id}
-function navigate(view){$$(".view").forEach(v=>v.classList.toggle("active",v.id===`view-${view}`));$$("[data-view]").forEach(b=>b.classList.toggle("active",b.dataset.view===view&&b.classList.contains("nav-item")));const names={home:"Overview",submit:"Submit a grievance",track:"Track a grievance",directory:"Service directory",admin:"Officer dashboard"};$("#crumbCurrent").textContent=names[view]||"Overview";$("#sidebar").classList.remove("open");window.scrollTo({top:0,behavior:"smooth"})}
-document.addEventListener("click",e=>{const b=e.target.closest("[data-view]");if(b){e.preventDefault();navigate(b.dataset.view)}});
-$("#mobileMenu")?.addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
-$("#helpButton")?.addEventListener("click",()=>toast("Demo portal: submit a grievance, save its reference ID, then track it here."));
-$("#description")?.addEventListener("input",e=>$("#charCount").textContent=`${e.target.value.length} / 1200`);
-$("#grievanceForm")?.addEventListener("reset",()=>setTimeout(()=>$("#charCount").textContent="0 / 1200",0));
-$("#grievanceForm")?.addEventListener("submit",e=>{e.preventDefault();const f=new FormData(e.currentTarget);const item={id:newId(),subject:f.get("subject").trim(),category:f.get("category"),area:f.get("area").trim(),description:f.get("description").trim(),name:f.get("citizenName").trim(),contact:f.get("contact").trim(),status:"Submitted",priority:/danger|urgent|accident|exposed wire|overflow/i.test(`${f.get("subject")} ${f.get("description")}`)?"High":"Normal",createdAt:new Date().toISOString(),history:[{status:"Submitted",date:new Date().toISOString(),note:"Grievance registered in the demo portal."}]};cases.unshift(item);saveCases();$("#successRef").textContent=item.id;$("#successModal").classList.remove("hidden");e.currentTarget.reset();$("#charCount").textContent="0 / 1200"});
-$("#closeModal")?.addEventListener("click",()=>$("#successModal").classList.add("hidden"));
-$("#modalHome")?.addEventListener("click",()=>{$("#successModal").classList.add("hidden");navigate("home")});
-$("#modalTrack")?.addEventListener("click",()=>{$("#trackId").value=$("#successRef").textContent;$("#successModal").classList.add("hidden");navigate("track");$("#trackForm").requestSubmit()});
-$("#copyRef")?.addEventListener("click",async()=>{try{await navigator.clipboard.writeText($("#successRef").textContent);toast("Reference ID copied.")}catch{toast("Please copy the reference ID manually.")}});
-$("#trackForm")?.addEventListener("submit",e=>{e.preventDefault();const id=$("#trackId").value.trim().toUpperCase();const c=cases.find(x=>x.id.toUpperCase()===id);const out=$("#trackResult");out.classList.remove("hidden");if(!c){out.innerHTML=`<div class="empty-state"><span>⌕</span><strong>No grievance found</strong><p>Check the reference ID and try again. Example: JSV-${new Date().getFullYear()}-1234</p></div>`;return}out.innerHTML=`<div class="panel-heading"><div><div class="section-kicker">GRIEVANCE DETAILS</div><h3>${esc(c.subject)}</h3></div>${statusPill(c.status)}</div><div class="track-help-grid"><div><small class="muted">REFERENCE ID</small><p><b>${esc(c.id)}</b></p></div><div><small class="muted">CATEGORY</small><p><b>${esc(c.category)}</b></p></div><div><small class="muted">LOCATION</small><p><b>${esc(c.area)}</b></p></div><div><small class="muted">SUBMITTED</small><p><b>${shortDate(c.createdAt)}</b></p></div></div><hr style="border:0;border-top:1px solid #edf1f1;margin:18px 0"><div class="section-kicker">STATUS HISTORY</div><div style="display:grid;gap:12px;margin-top:14px">${(c.history||[{status:c.status,date:c.createdAt,note:"Current status"}]).map(h=>`<div style="display:flex;gap:12px"><span style="color:#0d8b7b">●</span><div><b style="font-size:11px">${esc(h.status)}</b><div class="muted" style="font-size:10px">${shortDate(h.date)} — ${esc(h.note||"Status updated.")}</div></div></div>`).join("")}</div>`});
-function renderRecent(){const rows=$("#recentRows");const empty=$("#recentEmpty");const list=cases.slice(0,5);rows.innerHTML=list.map(c=>`<tr><td><b>${esc(c.id)}</b><span class="case-ref">${shortDate(c.createdAt)}</span></td><td class="case-title">${esc(c.subject)}</td><td>${esc(c.category)}</td><td>${statusPill(c.status)}</td></tr>`).join("");empty.classList.toggle("hidden",list.length>0)}
-function renderStats(){const total=cases.length,done=cases.filter(c=>["Resolved","Closed"].includes(c.status)).length,open=total-done;$("#statTotal").textContent=total;$("#statPending").textContent=open;$("#statResolved").textContent=done;$("#navOpenCount").textContent=open;$("#adminTotal").textContent=total;$("#adminOpen").textContent=open;$("#adminResolved").textContent=done;$("#adminHigh").textContent=cases.filter(c=>c.priority==="High"&&!["Resolved","Closed"].includes(c.status)).length}
-function renderCases(){const q=($("#caseSearch")?.value||"").toLowerCase();const st=$("#statusFilter")?.value||"all";const cat=$("#categoryFilter")?.value||"all";const list=cases.filter(c=>(st==="all"||c.status===st)&&(cat==="all"||c.category===cat)&&`${c.id} ${c.subject} ${c.area}`.toLowerCase().includes(q));$("#caseRows").innerHTML=list.map(c=>`<tr><td class="case-title">${esc(c.subject)}<span class="case-ref">${esc(c.id)}</span></td><td>${esc(c.category)}</td><td>${esc(c.area)}</td><td>${shortDate(c.createdAt)}</td><td><span class="priority-pill ${c.priority==="High"?"":"priority-low"}">${esc(c.priority||"Normal")}</span></td><td>${statusPill(c.status)}</td><td><select data-status-id="${esc(c.id)}" aria-label="Update status for ${esc(c.id)}">${["Submitted","In Progress","Awaiting Information","Resolved","Closed"].map(s=>`<option ${c.status===s?"selected":""}>${s}</option>`).join("")}</select></td></tr>`).join("");$("#caseEmpty").classList.toggle("hidden",list.length>0)}
-$("#caseSearch")?.addEventListener("input",renderCases);$("#statusFilter")?.addEventListener("change",renderCases);$("#categoryFilter")?.addEventListener("change",renderCases);
-$("#caseRows")?.addEventListener("change",e=>{const id=e.target.dataset.statusId;if(!id)return;const c=cases.find(x=>x.id===id);if(!c)return;const old=c.status;c.status=e.target.value;c.history=c.history||[];c.history.push({status:c.status,date:new Date().toISOString(),note:`Status changed from ${old} to ${c.status} in the demo officer dashboard.`});saveCases();toast(`Status updated: ${id}`)});
-function renderDirectory(){const q=($("#serviceSearch")?.value||"").toLowerCase();const list=categories.filter(c=>`${c.name} ${c.desc} ${c.hint}`.toLowerCase().includes(q));$("#serviceCount").textContent=`${list.length} service area${list.length===1?"":"s"}`;$("#serviceGrid").innerHTML=list.map((c,i)=>`<article class="service-card"><div class="service-icon">${c.icon}</div><h3>${c.name}</h3><p>${c.desc}</p><button class="link-button" data-service="${esc(c.name)}">Raise a request ↗</button></article>`).join("");$("#serviceGrid").querySelectorAll("[data-service]").forEach(b=>b.addEventListener("click",()=>{navigate("submit");$("#category").value=b.dataset.service;toast("Category selected. Add the location and details.")}))}
-$("#serviceSearch")?.addEventListener("input",renderDirectory);
-$("#exportCsv")?.addEventListener("click",()=>{if(!cases.length){toast("No cases to export yet.");return}const cols=["id","subject","category","area","status","priority","createdAt","description"];const csv=[cols.join(","),...cases.map(c=>cols.map(k=>`"${String(c[k]??"").replace(/"/g,'""')}"`).join(","))].join("\r\n");const blob=new Blob(["\ufeff"+csv],{type:"text/csv;charset=utf-8;"});const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="janseva-grievances.csv";a.click();URL.revokeObjectURL(url);toast("CSV export downloaded.")});
-function renderAll(){renderStats();renderRecent();renderCases();renderDirectory()}
-renderAll();
+
+let trackedCases = [];
+let adminCases = [];
+let adminAuthenticated = false;
+
+function esc(value = "") {
+  return String(value).replace(
+    /[&<>"']/g,
+    (character) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[character],
+  );
+}
+
+function toast(message) {
+  const element = document.createElement("div");
+  element.className = "toast";
+  element.textContent = message;
+  $("#toastRegion").append(element);
+  setTimeout(() => element.remove(), 3600);
+}
+
+function statusClass(status) {
+  if (status === "Resolved") return "status-resolved";
+  if (status === "In Progress" || status === "Awaiting Information")
+    return "status-progress";
+  if (status === "Closed") return "status-closed";
+  return "";
+}
+
+function statusPill(status) {
+  return `<span class="status-pill ${statusClass(status)}">${esc(status)}</span>`;
+}
+
+function iconMarkup(name) {
+  return `<svg class="ui-icon" aria-hidden="true"><use href="#icon-${esc(name)}"></use></svg>`;
+}
+
+function shortDate(value) {
+  return new Date(value).toLocaleDateString("en-IN", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+  });
+}
+
+function storedReferences() {
+  try {
+    const value = JSON.parse(localStorage.getItem(REFERENCE_STORE) || "[]");
+    return Array.isArray(value)
+      ? value.filter((id) => typeof id === "string").slice(0, 20)
+      : [];
+  } catch {
+    return [];
+  }
+}
+
+function rememberReference(id) {
+  const references = [
+    id,
+    ...storedReferences().filter((value) => value !== id),
+  ].slice(0, 20);
+  localStorage.setItem(REFERENCE_STORE, JSON.stringify(references));
+}
+
+async function api(path, options = {}) {
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 12000);
+  let response;
+  try {
+    response = await fetch(path, {
+      credentials: "same-origin",
+      headers: {
+        "Content-Type": "application/json",
+        ...(options.headers || {}),
+      },
+      ...options,
+      signal: options.signal || controller.signal,
+    });
+  } catch (error) {
+    if (error.name === "AbortError")
+      throw new Error(
+        "The service took too long to respond. Please try again.",
+      );
+    throw new Error(
+      "Unable to reach JanSeva. Check your connection and try again.",
+    );
+  } finally {
+    clearTimeout(timeout);
+  }
+  let payload = {};
+  try {
+    payload = await response.json();
+  } catch {
+    payload = {};
+  }
+  if (!response.ok) {
+    const error = new Error(
+      payload.error || "The service could not complete that request.",
+    );
+    error.status = response.status;
+    throw error;
+  }
+  return payload;
+}
+
+function navigate(view) {
+  $$(".view").forEach((element) =>
+    element.classList.toggle("active", element.id === `view-${view}`),
+  );
+  $$("[data-view]").forEach((button) =>
+    button.classList.toggle(
+      "active",
+      button.dataset.view === view && button.classList.contains("nav-item"),
+    ),
+  );
+  const names = {
+    home: "Overview",
+    submit: "Submit a grievance",
+    track: "Track a grievance",
+    directory: "Service directory",
+    admin: "Officer dashboard",
+  };
+  $("#crumbCurrent").textContent = names[view] || "Overview";
+  $("#sidebar").classList.remove("open");
+  $("#sidebarBackdrop").classList.remove("active");
+  $("#mobileMenu").setAttribute("aria-expanded", "false");
+  window.scrollTo({ top: 0, behavior: "smooth" });
+  if (view === "admin") prepareAdmin();
+}
+
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-view]");
+  if (button) {
+    event.preventDefault();
+    navigate(button.dataset.view);
+  }
+});
+
+function setNavigation(open) {
+  $("#sidebar").classList.toggle("open", open);
+  $("#sidebarBackdrop").classList.toggle("active", open);
+  $("#mobileMenu").setAttribute("aria-expanded", String(open));
+}
+$("#mobileMenu")?.addEventListener("click", () =>
+  setNavigation(!$("#sidebar").classList.contains("open")),
+);
+$("#sidebarBackdrop")?.addEventListener("click", () => setNavigation(false));
+$("#helpButton")?.addEventListener("click", () =>
+  toast(
+    "Submit a grievance, keep its reference ID, and use it to track updates.",
+  ),
+);
+$("#description")?.addEventListener(
+  "input",
+  (event) =>
+    ($("#charCount").textContent = `${event.target.value.length} / 1200`),
+);
+$("#grievanceForm")?.addEventListener("reset", () =>
+  setTimeout(() => ($("#charCount").textContent = "0 / 1200"), 0),
+);
+
+$("#grievanceForm")?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const submit = form.querySelector('[type="submit"]');
+  const errorRegion = $("#grievanceError");
+  errorRegion.textContent = "";
+  if (!form.checkValidity()) {
+    errorRegion.textContent =
+      "Please complete the required fields and correct any invalid values.";
+    form.querySelector(":invalid")?.focus();
+    form.reportValidity();
+    return;
+  }
+  const data = new FormData(form);
+  submit.disabled = true;
+  form.setAttribute("aria-busy", "true");
+  submit.textContent = "Submitting…";
+  try {
+    const result = await api("/api/grievances", {
+      method: "POST",
+      body: JSON.stringify({
+        subject: data.get("subject"),
+        category: data.get("category"),
+        area: data.get("area"),
+        description: data.get("description"),
+        name: data.get("citizenName"),
+        contact: data.get("contact"),
+        website: data.get("website"),
+      }),
+    });
+    rememberReference(result.referenceId);
+    $("#successRef").textContent = result.referenceId;
+    openSuccessModal();
+    form.reset();
+    await Promise.all([loadTrackedCases(), loadStats()]);
+  } catch (error) {
+    errorRegion.textContent = error.message;
+    errorRegion.focus?.();
+  } finally {
+    submit.disabled = false;
+    form.removeAttribute("aria-busy");
+    submit.innerHTML = "Submit grievance <span>→</span>";
+  }
+});
+
+let modalReturnFocus = null;
+function openSuccessModal() {
+  modalReturnFocus = document.activeElement;
+  $("#successModal").classList.remove("hidden");
+  $("#closeModal").focus();
+}
+function closeSuccessModal() {
+  $("#successModal").classList.add("hidden");
+  modalReturnFocus?.focus?.();
+}
+$("#closeModal")?.addEventListener("click", closeSuccessModal);
+$("#modalHome")?.addEventListener("click", () => {
+  closeSuccessModal();
+  navigate("home");
+});
+$("#modalTrack")?.addEventListener("click", () => {
+  $("#trackId").value = $("#successRef").textContent;
+  closeSuccessModal();
+  navigate("track");
+  $("#trackForm").requestSubmit();
+});
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape") {
+    if (!$("#successModal").classList.contains("hidden")) closeSuccessModal();
+    setNavigation(false);
+  }
+});
+$("#copyRef")?.addEventListener("click", async () => {
+  try {
+    await navigator.clipboard.writeText($("#successRef").textContent);
+    toast("Reference ID copied.");
+  } catch {
+    toast("Please copy the reference ID manually.");
+  }
+});
+
+function renderTrackingResult(grievance) {
+  return `<div class="panel-heading"><div><div class="section-kicker">GRIEVANCE DETAILS</div><h3>${esc(grievance.subject)}</h3></div>${statusPill(grievance.status)}</div>
+    <div class="track-help-grid"><div><small class="muted">REFERENCE ID</small><p><b>${esc(grievance.id)}</b></p></div><div><small class="muted">CATEGORY</small><p><b>${esc(grievance.category)}</b></p></div><div><small class="muted">LOCATION</small><p><b>${esc(grievance.area)}</b></p></div><div><small class="muted">SUBMITTED</small><p><b>${shortDate(grievance.createdAt)}</b></p></div></div>
+    <hr style="border:0;border-top:1px solid #edf1f1;margin:18px 0"><div class="section-kicker">STATUS HISTORY</div><div style="display:grid;gap:12px;margin-top:14px">${(grievance.history || []).map((history) => `<div style="display:flex;gap:12px"><span style="color:#0d8b7b">●</span><div><b style="font-size:11px">${esc(history.status)}</b><div class="muted" style="font-size:10px">${shortDate(history.date)} — ${esc(history.note || "Status updated.")}</div></div></div>`).join("")}</div>`;
+}
+
+$("#trackForm")?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const id = $("#trackId").value.trim().toUpperCase();
+  const output = $("#trackResult");
+  output.classList.remove("hidden");
+  output.innerHTML =
+    '<div class="empty-state"><span class="loading-dot">●</span><strong>Checking your reference…</strong></div>';
+  try {
+    const { grievance } = await api(
+      `/api/grievances/${encodeURIComponent(id)}`,
+    );
+    rememberReference(grievance.id);
+    output.innerHTML = renderTrackingResult(grievance);
+    await loadTrackedCases();
+  } catch (error) {
+    output.innerHTML = `<div class="empty-state"><span>⌕</span><strong>No grievance found</strong><p>${esc(error.message)}</p></div>`;
+  }
+});
+
+function renderRecent() {
+  const list = trackedCases.slice(0, 5);
+  $("#recentRows").innerHTML = list
+    .map(
+      (grievance) =>
+        `<tr><td><b>${esc(grievance.id)}</b><span class="case-ref">${shortDate(grievance.createdAt)}</span></td><td class="case-title">${esc(grievance.subject)}</td><td>${esc(grievance.category)}</td><td>${statusPill(grievance.status)}</td></tr>`,
+    )
+    .join("");
+  $("#recentEmpty").classList.toggle("hidden", list.length > 0);
+}
+
+async function loadTrackedCases() {
+  const results = await Promise.all(
+    storedReferences()
+      .slice(0, 10)
+      .map(async (id) => {
+        try {
+          return (await api(`/api/grievances/${encodeURIComponent(id)}`))
+            .grievance;
+        } catch {
+          return null;
+        }
+      }),
+  );
+  trackedCases = results.filter(Boolean);
+  renderRecent();
+}
+
+async function loadStats() {
+  try {
+    const stats = await api("/api/stats");
+    $("#statTotal").textContent = stats.total;
+    $("#statPending").textContent = stats.open;
+    $("#statResolved").textContent = stats.resolved;
+  } catch {
+    $("#statTotal").textContent = "—";
+    $("#statPending").textContent = "—";
+    $("#statResolved").textContent = "—";
+  }
+}
+
+function renderAdminStats() {
+  const total = adminCases.length;
+  const resolved = adminCases.filter((item) =>
+    ["Resolved", "Closed"].includes(item.status),
+  ).length;
+  const open = total - resolved;
+  $("#adminTotal").textContent = total;
+  $("#adminOpen").textContent = open;
+  $("#adminResolved").textContent = resolved;
+  $("#adminHigh").textContent = adminCases.filter(
+    (item) =>
+      item.priority === "High" && !["Resolved", "Closed"].includes(item.status),
+  ).length;
+  $("#navOpenCount").textContent = adminAuthenticated ? open : "•";
+}
+
+function renderCases() {
+  $("#caseRows").innerHTML = adminCases
+    .map(
+      (item) =>
+        `<tr><td class="case-title">${esc(item.subject)}<span class="case-ref">${esc(item.id)}</span></td><td>${esc(item.category)}</td><td>${esc(item.area)}</td><td>${shortDate(item.createdAt)}</td><td><span class="priority-pill ${item.priority === "High" ? "" : "priority-low"}">${esc(item.priority || "Normal")}</span></td><td>${statusPill(item.status)}</td><td><div class="case-actions"><select data-status-id="${esc(item.id)}" aria-label="Update status for ${esc(item.id)}">${["Submitted", "In Progress", "Awaiting Information", "Resolved", "Closed"].map((status) => `<option ${item.status === status ? "selected" : ""}>${status}</option>`).join("")}</select><button class="delete-case" data-delete-id="${esc(item.id)}" type="button">Remove</button></div></td></tr>`,
+    )
+    .join("");
+  $("#caseEmpty").classList.toggle("hidden", adminCases.length > 0);
+  renderAdminStats();
+}
+
+async function loadAdminCases() {
+  const params = new URLSearchParams({
+    q: $("#caseSearch")?.value || "",
+    status: $("#statusFilter")?.value || "all",
+    category: $("#categoryFilter")?.value || "all",
+  });
+  try {
+    const result = await api(`/api/admin/grievances?${params}`);
+    adminCases = result.grievances;
+    renderCases();
+  } catch (error) {
+    if (error.status === 401) showAdminLogin();
+    else toast(error.message);
+  }
+}
+
+function showAdminLogin() {
+  adminAuthenticated = false;
+  adminCases = [];
+  $("#adminLoginPanel").classList.remove("hidden");
+  $("#adminContent").classList.add("hidden");
+  $("#navOpenCount").textContent = "•";
+}
+
+function showAdminContent() {
+  adminAuthenticated = true;
+  $("#adminLoginPanel").classList.add("hidden");
+  $("#adminContent").classList.remove("hidden");
+}
+
+async function prepareAdmin() {
+  try {
+    const session = await api("/api/admin/session");
+    if (!session.authenticated) return showAdminLogin();
+    showAdminContent();
+    await loadAdminCases();
+  } catch {
+    showAdminLogin();
+  }
+}
+
+$("#adminLoginForm")?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const button = form.querySelector("button");
+  button.disabled = true;
+  button.textContent = "Signing in…";
+  $("#adminLoginError").textContent = "";
+  try {
+    await api("/api/admin/login", {
+      method: "POST",
+      body: JSON.stringify({ password: new FormData(form).get("password") }),
+    });
+    form.reset();
+    showAdminContent();
+    await loadAdminCases();
+    toast("Officer session started.");
+  } catch (error) {
+    $("#adminLoginError").textContent = error.message;
+  } finally {
+    button.disabled = false;
+    button.textContent = "Sign in securely";
+  }
+});
+
+$("#adminLogout")?.addEventListener("click", async () => {
+  await api("/api/admin/logout", { method: "POST", body: "{}" }).catch(
+    () => undefined,
+  );
+  showAdminLogin();
+  toast("Officer session ended.");
+});
+
+let searchTimer;
+$("#caseSearch")?.addEventListener("input", () => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(loadAdminCases, 250);
+});
+$("#statusFilter")?.addEventListener("change", loadAdminCases);
+$("#categoryFilter")?.addEventListener("change", loadAdminCases);
+$("#caseRows")?.addEventListener("change", async (event) => {
+  const id = event.target.dataset.statusId;
+  if (!id) return;
+  const previous = adminCases.find((item) => item.id === id)?.status;
+  event.target.disabled = true;
+  try {
+    await api(`/api/admin/grievances/${encodeURIComponent(id)}`, {
+      method: "PATCH",
+      body: JSON.stringify({ status: event.target.value }),
+    });
+    await Promise.all([loadAdminCases(), loadStats(), loadTrackedCases()]);
+    toast(`Status updated: ${id}`);
+  } catch (error) {
+    event.target.value = previous;
+    toast(error.message);
+  } finally {
+    event.target.disabled = false;
+  }
+});
+$("#caseRows")?.addEventListener("click", async (event) => {
+  const button = event.target.closest("[data-delete-id]");
+  if (!button) return;
+  const id = button.dataset.deleteId;
+  if (!window.confirm(`Permanently remove ${id}? This cannot be undone.`))
+    return;
+  button.disabled = true;
+  try {
+    await api(`/api/admin/grievances/${encodeURIComponent(id)}`, {
+      method: "DELETE",
+      body: "{}",
+    });
+    await Promise.all([loadAdminCases(), loadStats(), loadTrackedCases()]);
+    toast(`Removed ${id}.`);
+  } catch (error) {
+    toast(error.message);
+    button.disabled = false;
+  }
+});
+
+function renderDirectory() {
+  const query = ($("#serviceSearch")?.value || "").toLowerCase();
+  const list = categories.filter((category) =>
+    `${category.name} ${category.desc} ${category.hint}`
+      .toLowerCase()
+      .includes(query),
+  );
+  $("#serviceCount").textContent =
+    `${list.length} service area${list.length === 1 ? "" : "s"}`;
+  $("#serviceGrid").innerHTML = list
+    .map(
+      (category) =>
+        `<article class="service-card"><div class="service-icon">${iconMarkup(category.icon)}</div><h2>${category.name}</h2><p>${category.desc}</p><button class="link-button" data-service="${esc(category.name)}">Raise a request ↗</button></article>`,
+    )
+    .join("");
+  $("#serviceGrid")
+    .querySelectorAll("[data-service]")
+    .forEach((button) =>
+      button.addEventListener("click", () => {
+        navigate("submit");
+        $("#category").value = button.dataset.service;
+        toast("Category selected. Add the location and details.");
+      }),
+    );
+}
+
+$("#serviceSearch")?.addEventListener("input", renderDirectory);
+$("#exportCsv")?.addEventListener("click", () => {
+  if (!adminCases.length) return toast("No cases to export.");
+  const columns = [
+    "id",
+    "subject",
+    "category",
+    "area",
+    "status",
+    "priority",
+    "createdAt",
+    "description",
+    "name",
+    "contact",
+  ];
+  const csv = [
+    columns.join(","),
+    ...adminCases.map((item) =>
+      columns
+        .map((key) => `"${String(item[key] ?? "").replace(/"/g, '""')}"`)
+        .join(","),
+    ),
+  ].join("\r\n");
+  const url = URL.createObjectURL(
+    new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8;" }),
+  );
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = `janseva-grievances-${new Date().toISOString().slice(0, 10)}.csv`;
+  link.click();
+  URL.revokeObjectURL(url);
+  toast("CSV export downloaded.");
+});
+
+renderDirectory();
+renderRecent();
+renderAdminStats();
+Promise.all([loadStats(), loadTrackedCases()]);

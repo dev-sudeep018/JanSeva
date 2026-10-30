@@ -1,127 +1,873 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#102b35">
-  <title>JanSeva — Public Grievance Tracker</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<div class="app-shell">
-  <aside class="sidebar" id="sidebar">
-    <a class="brand" href="#" data-view="home"><span class="brand-mark">✓</span><span><strong>JanSeva</strong><small>PUBLIC SERVICE PORTAL</small></span></a>
-    <div class="sidebar-label">WORKSPACE</div>
-    <nav class="side-nav">
-      <button class="nav-item active" data-view="home"><span class="nav-icon">⌂</span>Overview</button>
-      <button class="nav-item" data-view="submit"><span class="nav-icon">＋</span>Submit a grievance</button>
-      <button class="nav-item" data-view="track"><span class="nav-icon">◎</span>Track a grievance</button>
-      <button class="nav-item" data-view="directory"><span class="nav-icon">▦</span>Service directory</button>
-    </nav>
-    <div class="sidebar-label admin-label">MANAGEMENT</div>
-    <nav class="side-nav"><button class="nav-item" data-view="admin"><span class="nav-icon">▤</span>Officer dashboard <span class="nav-count" id="navOpenCount">0</span></button></nav>
-    <div class="sidebar-bottom">
-      <div class="help-card"><span class="help-orb">✦</span><strong>Need a hand?</strong><p>Find the right service or learn how to raise a concern.</p><button class="text-button" data-view="directory">Explore services <span>↗</span></button></div>
-      <div class="profile-row"><div class="profile-avatar">JS</div><div class="profile-copy"><strong>JanSeva Portal</strong><span>Demo environment</span></div><span class="online-dot"></span></div>
-    </div>
-  </aside>
-  <main class="main-area">
-    <header class="topbar">
-      <button class="mobile-menu" id="mobileMenu" aria-label="Open navigation">☰</button>
-      <div class="breadcrumb"><span>Workspace</span><span class="crumb-sep">/</span><strong id="crumbCurrent">Overview</strong></div>
-      <div class="topbar-actions"><span class="demo-pill"><span></span> DEMO MODE</span><button class="icon-button" id="helpButton" aria-label="Help">?</button><div class="top-avatar">JS</div></div>
-    </header>
-    <div class="page-wrap">
-      <section class="view active" id="view-home">
-        <div class="hero-banner">
-          <div class="hero-content">
-            <div class="eyebrow"><span class="eyebrow-line"></span> CITIZEN SERVICES, SIMPLIFIED</div>
-            <h1>Your voice matters.<br><em>We’re here to listen.</em></h1>
-            <p>A clearer, more transparent way to raise public concerns and follow every step towards resolution.</p>
-            <div class="hero-actions"><button class="btn btn-light" data-view="submit">Raise a grievance <span>↗</span></button><button class="btn btn-ghost-light" data-view="track">Track a request <span>→</span></button></div>
-            <div class="hero-note"><span class="secure-icon">✓</span> Simple. Transparent. Accountable.</div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#173b4f" />
+    <meta
+      name="description"
+      content="Submit and track civic grievances through the independent JanSeva public-service portal."
+    />
+    <title>JanSeva — Public Grievance Tracker</title>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@600;700&family=Lato:wght@400;700;900&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <a class="skip-link" href="#mainContent">Skip to main content</a>
+    <svg class="icon-sprite" aria-hidden="true">
+      <symbol id="icon-check" viewBox="0 0 24 24">
+        <path d="m5 12 4 4L19 6" />
+      </symbol>
+      <symbol id="icon-home" viewBox="0 0 24 24">
+        <path d="m3 11 9-8 9 8" />
+        <path d="M5 10v10h14V10" />
+        <path d="M9 20v-6h6v6" />
+      </symbol>
+      <symbol id="icon-plus" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12h14" />
+      </symbol>
+      <symbol id="icon-search" viewBox="0 0 24 24">
+        <circle cx="11" cy="11" r="7" />
+        <path d="m20 20-4-4" />
+      </symbol>
+      <symbol id="icon-grid" viewBox="0 0 24 24">
+        <rect x="3" y="3" width="7" height="7" rx="1" />
+        <rect x="14" y="3" width="7" height="7" rx="1" />
+        <rect x="3" y="14" width="7" height="7" rx="1" />
+        <rect x="14" y="14" width="7" height="7" rx="1" />
+      </symbol>
+      <symbol id="icon-clipboard" viewBox="0 0 24 24">
+        <path d="M9 5H6a2 2 0 0 0-2 2v13h16V7a2 2 0 0 0-2-2h-3" />
+        <rect x="9" y="3" width="6" height="4" rx="1" />
+        <path d="M8 12h8M8 16h6" />
+      </symbol>
+      <symbol id="icon-help" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 1-1 1.7M12 17h.01" />
+      </symbol>
+      <symbol id="icon-menu" viewBox="0 0 24 24">
+        <path d="M4 7h16M4 12h16M4 17h16" />
+      </symbol>
+      <symbol id="icon-clock" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 7v5l3 2" />
+      </symbol>
+      <symbol id="icon-info" viewBox="0 0 24 24">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M12 11v6M12 7h.01" />
+      </symbol>
+      <symbol id="icon-download" viewBox="0 0 24 24">
+        <path d="M12 3v12m0 0 5-5m-5 5-5-5M5 20h14" />
+      </symbol>
+      <symbol id="icon-road" viewBox="0 0 24 24">
+        <path d="M7 3 5 21M17 3l2 18M12 5v3m0 4v3m0 4v2" />
+      </symbol>
+      <symbol id="icon-water" viewBox="0 0 24 24">
+        <path d="M12 3s6 6.2 6 11a6 6 0 0 1-12 0c0-4.8 6-11 6-11Z" />
+        <path d="M9 15a3 3 0 0 0 3 2" />
+      </symbol>
+      <symbol id="icon-waste" viewBox="0 0 24 24">
+        <path d="M4 7h16M9 7V4h6v3M7 7l1 14h8l1-14M10 11v6M14 11v6" />
+      </symbol>
+      <symbol id="icon-light" viewBox="0 0 24 24">
+        <path
+          d="M9 18h6M10 22h4M8.5 14.5a6 6 0 1 1 7 0c-.9.7-1.5 1.6-1.5 2.5h-4c0-.9-.6-1.8-1.5-2.5Z"
+        />
+      </symbol>
+      <symbol id="icon-close" viewBox="0 0 24 24">
+        <path d="m6 6 12 12M18 6 6 18" />
+      </symbol>
+      <symbol id="icon-arrow" viewBox="0 0 24 24">
+        <path d="M5 12h14m-6-6 6 6-6 6" />
+      </symbol>
+    </svg>
+    <div class="app-shell">
+      <aside class="sidebar" id="sidebar">
+        <a class="brand" href="#" data-view="home"
+          ><span class="brand-mark"
+            ><svg class="ui-icon" aria-hidden="true">
+              <use href="#icon-check" /></svg></span
+          ><span
+            ><strong>JanSeva</strong><small>PUBLIC SERVICE PORTAL</small></span
+          ></a
+        >
+        <div class="sidebar-label">WORKSPACE</div>
+        <nav class="side-nav">
+          <button class="nav-item active" data-view="home">
+            <svg class="nav-icon" aria-hidden="true">
+              <use href="#icon-home" /></svg
+            >Overview
+          </button>
+          <button class="nav-item" data-view="submit">
+            <svg class="nav-icon" aria-hidden="true">
+              <use href="#icon-plus" /></svg
+            >Submit a grievance
+          </button>
+          <button class="nav-item" data-view="track">
+            <svg class="nav-icon" aria-hidden="true">
+              <use href="#icon-search" /></svg
+            >Track a grievance
+          </button>
+          <button class="nav-item" data-view="directory">
+            <svg class="nav-icon" aria-hidden="true">
+              <use href="#icon-grid" /></svg
+            >Service directory
+          </button>
+        </nav>
+        <div class="sidebar-label admin-label">MANAGEMENT</div>
+        <nav class="side-nav">
+          <button class="nav-item" data-view="admin">
+            <svg class="nav-icon" aria-hidden="true">
+              <use href="#icon-clipboard" /></svg
+            >Officer dashboard
+            <span class="nav-count" id="navOpenCount">0</span>
+          </button>
+        </nav>
+        <div class="sidebar-bottom">
+          <div class="help-card">
+            <span class="help-orb"
+              ><svg class="ui-icon" aria-hidden="true">
+                <use href="#icon-help" /></svg></span
+            ><strong>Need a hand?</strong>
+            <p>Find the right service or learn how to raise a concern.</p>
+            <button class="text-button" data-view="directory">
+              Explore services <span>↗</span>
+            </button>
           </div>
-          <div class="hero-art" aria-hidden="true"><div class="art-ring ring-one"></div><div class="art-ring ring-two"></div><div class="art-glow"></div>
-            <div class="art-card art-card-main"><div class="art-card-top"><span class="mini-shield">✓</span><span class="art-status">CASE UPDATE</span></div><strong>Request received</strong><span class="art-ref">JSV-2026-1048</span><div class="art-progress"><i></i></div><div class="art-card-bottom"><span>Resolution journey</span><b>68%</b></div></div>
-            <div class="floating-chip chip-one"><span class="chip-check">✓</span><span><b>Transparent updates</b><small>Every step, visible</small></span></div>
-            <div class="floating-chip chip-two"><span class="chip-clock">◷</span><span><b>One clear reference</b><small>Easy to follow up</small></span></div><div class="art-star star-one">✳</div><div class="art-star star-two">✦</div>
+          <div class="profile-row">
+            <div class="profile-avatar">JS</div>
+            <div class="profile-copy">
+              <strong>JanSeva Portal</strong><span>Cloud service online</span>
+            </div>
+            <span class="online-dot"></span>
           </div>
         </div>
-        <div class="welcome-row"><div><div class="section-kicker">YOUR SERVICE OVERVIEW</div><h2>Public service at a glance</h2><p class="muted">A transparent view of the grievance process.</p></div><div class="date-chip"><span class="date-dot"></span> Live demo overview</div></div>
-        <div class="stats-grid">
-          <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-blue">▤</span><span class="stat-trend">ALL CASES</span></div><div class="stat-number" id="statTotal">0</div><div class="stat-label">Total grievances</div><div class="stat-foot"><span class="tiny-bar bar-blue"></span> All registered requests</div></article>
-          <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-amber">◷</span><span class="stat-trend">IN REVIEW</span></div><div class="stat-number" id="statPending">0</div><div class="stat-label">Open & in progress</div><div class="stat-foot"><span class="tiny-bar bar-amber"></span> Awaiting resolution</div></article>
-          <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-green">✓</span><span class="stat-trend">COMPLETED</span></div><div class="stat-number" id="statResolved">0</div><div class="stat-label">Resolved cases</div><div class="stat-foot"><span class="tiny-bar bar-green"></span> Marked as resolved</div></article>
-          <article class="stat-card"><div class="stat-top"><span class="stat-icon icon-violet">◉</span><span class="stat-trend">SERVICE AREAS</span></div><div class="stat-number">06</div><div class="stat-label">Service categories</div><div class="stat-foot"><span class="tiny-bar bar-violet"></span> One place to get started</div></article>
-        </div>
-        <div class="home-grid">
-          <section class="panel recent-panel"><div class="panel-heading"><div><div class="section-kicker">RECENT ACTIVITY</div><h3>Recently submitted grievances</h3></div><button class="link-button" data-view="admin">View all <span>→</span></button></div>
-            <div class="table-wrap"><table class="data-table"><thead><tr><th>REFERENCE</th><th>GRIEVANCE</th><th>CATEGORY</th><th>STATUS</th></tr></thead><tbody id="recentRows"></tbody></table></div>
-            <div class="empty-state hidden" id="recentEmpty"><span>▤</span><strong>No grievances yet</strong><p>Submit a sample grievance to see it appear here.</p><button class="btn btn-primary btn-sm" data-view="submit">Create grievance</button></div>
+      </aside>
+      <button
+        class="sidebar-backdrop"
+        id="sidebarBackdrop"
+        aria-label="Close navigation"
+      ></button>
+      <main class="main-area" id="mainContent" tabindex="-1">
+        <header class="topbar">
+          <button
+            class="mobile-menu"
+            id="mobileMenu"
+            aria-label="Open navigation"
+            aria-controls="sidebar"
+            aria-expanded="false"
+          >
+            <svg class="ui-icon" aria-hidden="true">
+              <use href="#icon-menu" />
+            </svg>
+          </button>
+          <div class="breadcrumb">
+            <span>Workspace</span><span class="crumb-sep">/</span
+            ><strong id="crumbCurrent">Overview</strong>
+          </div>
+          <div class="topbar-actions">
+            <span class="demo-pill"><span></span> LIVE PORTAL</span
+            ><button class="icon-button" id="helpButton" aria-label="Help">
+              <svg class="ui-icon" aria-hidden="true">
+                <use href="#icon-help" />
+              </svg>
+            </button>
+            <div class="top-avatar">JS</div>
+          </div>
+        </header>
+        <div class="page-wrap">
+          <section class="view active" id="view-home">
+            <div class="hero-banner">
+              <div class="hero-content">
+                <h1>Your voice matters.<br /><em>We’re here to listen.</em></h1>
+                <p>
+                  A clearer, more transparent way to raise public concerns and
+                  follow every step towards resolution.
+                </p>
+                <div class="hero-actions">
+                  <button class="btn btn-light" data-view="submit">
+                    Raise a grievance <span>↗</span></button
+                  ><button class="btn btn-ghost-light" data-view="track">
+                    Track a request <span>→</span>
+                  </button>
+                </div>
+                <div class="hero-note">
+                  <span class="secure-icon">✓</span> Simple. Transparent.
+                  Accountable.
+                </div>
+              </div>
+              <div class="hero-art" aria-hidden="true">
+                <div class="art-ring ring-one"></div>
+                <div class="art-ring ring-two"></div>
+                <div class="art-glow"></div>
+                <div class="art-card art-card-main">
+                  <div class="art-card-top">
+                    <span class="mini-shield">✓</span
+                    ><span class="art-status">CASE UPDATE</span>
+                  </div>
+                  <strong>Request received</strong
+                  ><span class="art-ref">JSV-2026-1048</span>
+                  <div class="art-progress"><i></i></div>
+                  <div class="art-card-bottom">
+                    <span>Resolution journey</span><b>68%</b>
+                  </div>
+                </div>
+                <div class="floating-chip chip-one">
+                  <span class="chip-check">✓</span
+                  ><span
+                    ><b>Transparent updates</b
+                    ><small>Every step, visible</small></span
+                  >
+                </div>
+                <div class="floating-chip chip-two">
+                  <span class="chip-clock">◷</span
+                  ><span
+                    ><b>One clear reference</b
+                    ><small>Easy to follow up</small></span
+                  >
+                </div>
+                <div class="art-star star-one">✳</div>
+                <div class="art-star star-two">✦</div>
+              </div>
+            </div>
+            <div class="welcome-row">
+              <div>
+                <h2>Public service at a glance</h2>
+                <p class="muted">
+                  A transparent view of the grievance process.
+                </p>
+              </div>
+              <div class="date-chip">
+                <span class="date-dot"></span> Live demo overview
+              </div>
+            </div>
+            <div class="stats-grid">
+              <article class="stat-card">
+                <div class="stat-top">
+                  <span class="stat-icon icon-blue"
+                    ><svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-clipboard" /></svg></span
+                  ><span class="stat-trend">ALL CASES</span>
+                </div>
+                <div class="stat-number" id="statTotal">0</div>
+                <div class="stat-label">Total grievances</div>
+                <div class="stat-foot">
+                  <span class="tiny-bar bar-blue"></span> All registered
+                  requests
+                </div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-top">
+                  <span class="stat-icon icon-amber"
+                    ><svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-clock" /></svg></span
+                  ><span class="stat-trend">IN REVIEW</span>
+                </div>
+                <div class="stat-number" id="statPending">0</div>
+                <div class="stat-label">Open & in progress</div>
+                <div class="stat-foot">
+                  <span class="tiny-bar bar-amber"></span> Awaiting resolution
+                </div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-top">
+                  <span class="stat-icon icon-green"
+                    ><svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-check" /></svg></span
+                  ><span class="stat-trend">COMPLETED</span>
+                </div>
+                <div class="stat-number" id="statResolved">0</div>
+                <div class="stat-label">Resolved cases</div>
+                <div class="stat-foot">
+                  <span class="tiny-bar bar-green"></span> Marked as resolved
+                </div>
+              </article>
+              <article class="stat-card">
+                <div class="stat-top">
+                  <span class="stat-icon icon-violet"
+                    ><svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-grid" /></svg></span
+                  ><span class="stat-trend">SERVICE AREAS</span>
+                </div>
+                <div class="stat-number">06</div>
+                <div class="stat-label">Service categories</div>
+                <div class="stat-foot">
+                  <span class="tiny-bar bar-violet"></span> One place to get
+                  started
+                </div>
+              </article>
+            </div>
+            <div class="home-grid">
+              <section class="panel recent-panel">
+                <div class="panel-heading">
+                  <div>
+                    <h3>Recently submitted grievances</h3>
+                  </div>
+                  <button class="link-button" data-view="admin">
+                    View all <span>→</span>
+                  </button>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table">
+                    <thead>
+                      <tr>
+                        <th>REFERENCE</th>
+                        <th>GRIEVANCE</th>
+                        <th>CATEGORY</th>
+                        <th>STATUS</th>
+                      </tr>
+                    </thead>
+                    <tbody id="recentRows"></tbody>
+                  </table>
+                </div>
+                <div class="empty-state hidden" id="recentEmpty">
+                  <span>▤</span><strong>No grievances yet</strong>
+                  <p>Submit a sample grievance to see it appear here.</p>
+                  <button class="btn btn-primary btn-sm" data-view="submit">
+                    Create grievance
+                  </button>
+                </div>
+              </section>
+              <section class="panel quick-panel">
+                <div class="panel-heading">
+                  <div>
+                    <h3>How can we help?</h3>
+                  </div>
+                  <span class="sparkle">✦</span>
+                </div>
+                <button class="quick-action" data-view="submit">
+                  <span class="quick-icon quick-teal"
+                    ><svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-plus" /></svg></span
+                  ><span
+                    ><b>Raise a new grievance</b
+                    ><small>Tell us what needs attention.</small></span
+                  ><span class="quick-arrow">↗</span>
+                </button>
+                <button class="quick-action" data-view="track">
+                  <span class="quick-icon quick-blue"
+                    ><svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-search" /></svg></span
+                  ><span
+                    ><b>Check request status</b
+                    ><small>Follow progress using your ID.</small></span
+                  ><span class="quick-arrow">↗</span>
+                </button>
+                <button class="quick-action" data-view="directory">
+                  <span class="quick-icon quick-gold"
+                    ><svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-grid" /></svg></span
+                  ><span
+                    ><b>Browse service directory</b
+                    ><small>Find the right service category.</small></span
+                  ><span class="quick-arrow">↗</span>
+                </button>
+                <div class="notice-strip">
+                  <span>ⓘ</span>
+                  <p>
+                    <b>Independent prototype</b> — records are stored securely
+                    for this demonstration but are not sent to a government
+                    department.
+                  </p>
+                </div>
+              </section>
+            </div>
+            <div class="trust-row">
+              <span>✦ Built around citizen-first service</span
+              ><span>✓ Clear status updates</span
+              ><span>✓ Reference-based tracking</span
+              ><span>✓ Persistent cloud storage</span>
+            </div>
           </section>
-          <section class="panel quick-panel"><div class="panel-heading"><div><div class="section-kicker">GET STARTED</div><h3>How can we help?</h3></div><span class="sparkle">✦</span></div>
-            <button class="quick-action" data-view="submit"><span class="quick-icon quick-teal">＋</span><span><b>Raise a new grievance</b><small>Tell us what needs attention.</small></span><span class="quick-arrow">↗</span></button>
-            <button class="quick-action" data-view="track"><span class="quick-icon quick-blue">◎</span><span><b>Check request status</b><small>Follow progress using your ID.</small></span><span class="quick-arrow">↗</span></button>
-            <button class="quick-action" data-view="directory"><span class="quick-icon quick-gold">▦</span><span><b>Browse service directory</b><small>Find the right service category.</small></span><span class="quick-arrow">↗</span></button>
-            <div class="notice-strip"><span>ⓘ</span><p><b>Prototype notice</b> — this demo does not submit cases to a real government department.</p></div>
+
+          <section class="view" id="view-submit">
+            <div class="page-heading">
+              <div>
+                <h1>Raise a grievance</h1>
+                <p>
+                  Share the details below. We’ll create a reference ID so you
+                  can follow the progress.
+                </p>
+              </div>
+              <div class="heading-mark">01 <span>/ 03</span></div>
+            </div>
+            <div class="form-layout">
+              <form class="panel grievance-form" id="grievanceForm" novalidate>
+                <div class="form-section-title">
+                  <span class="step-number">1</span>
+                  <div>
+                    <h2>What is the issue?</h2>
+                    <p>Give your request a clear title and category.</p>
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="subject">Grievance title <span>*</span></label
+                  ><input
+                    id="subject"
+                    name="subject"
+                    maxlength="100"
+                    required
+                    placeholder="e.g. Streetlight not working on 4th Avenue"
+                  /><small>Keep it short and specific.</small>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="category">Service category <span>*</span></label
+                    ><select id="category" name="category" required>
+                      <option value="">Select a category</option>
+                      <option>Roads & Infrastructure</option>
+                      <option>Water Supply</option>
+                      <option>Sanitation & Waste</option>
+                      <option>Street Lighting</option>
+                      <option>Public Health</option>
+                      <option>Other Public Services</option>
+                    </select>
+                  </div>
+                  <div class="field">
+                    <label for="area">Area / locality <span>*</span></label
+                    ><input
+                      id="area"
+                      name="area"
+                      maxlength="100"
+                      required
+                      placeholder="e.g. Madhapur, Hyderabad"
+                    />
+                  </div>
+                </div>
+                <div class="field">
+                  <label for="description"
+                    >Describe the issue <span>*</span></label
+                  ><textarea
+                    id="description"
+                    name="description"
+                    rows="5"
+                    maxlength="1200"
+                    required
+                    placeholder="Tell us what happened, where it happened, and when you first noticed it."
+                  ></textarea>
+                  <div class="field-bottom">
+                    <small
+                      >Please avoid sharing sensitive personal
+                      information.</small
+                    ><small id="charCount">0 / 1200</small>
+                  </div>
+                </div>
+                <div class="form-section-title section-spaced">
+                  <span class="step-number">2</span>
+                  <div>
+                    <h2>How can we follow up?</h2>
+                    <p>Optional contact details for this demonstration.</p>
+                  </div>
+                </div>
+                <div class="field-row">
+                  <div class="field">
+                    <label for="citizenName"
+                      >Your name
+                      <small class="optional">(optional)</small></label
+                    ><input
+                      id="citizenName"
+                      name="citizenName"
+                      maxlength="80"
+                      autocomplete="name"
+                      placeholder="Name"
+                    />
+                  </div>
+                  <div class="field">
+                    <label for="contact"
+                      >Contact number
+                      <small class="optional">(optional)</small></label
+                    ><input
+                      id="contact"
+                      name="contact"
+                      inputmode="tel"
+                      maxlength="20"
+                      autocomplete="tel"
+                      placeholder="Phone number"
+                    />
+                  </div>
+                </div>
+                <div class="bot-field" aria-hidden="true">
+                  <label for="website">Leave this field blank</label
+                  ><input
+                    id="website"
+                    name="website"
+                    tabindex="-1"
+                    autocomplete="off"
+                  />
+                </div>
+                <p
+                  class="form-error form-error-wide"
+                  id="grievanceError"
+                  role="alert"
+                ></p>
+                <div class="form-footer">
+                  <span class="required-note"
+                    ><span>*</span> Required fields</span
+                  ><button type="reset" class="btn btn-outline">
+                    Clear form</button
+                  ><button type="submit" class="btn btn-primary">
+                    Submit grievance <span>→</span>
+                  </button>
+                </div>
+              </form>
+              <aside class="form-aside">
+                <div class="aside-card dark-aside">
+                  <span class="aside-icon">✦</span>
+                  <h3>Your concern deserves to be heard.</h3>
+                  <p>
+                    Every submission receives a unique reference ID to make
+                    follow-up simpler.
+                  </p>
+                  <div class="aside-divider"></div>
+                  <div class="aside-point">
+                    <span>✓</span>
+                    <div>
+                      <b>Keep your reference ID</b
+                      ><small>You’ll need it to track your request.</small>
+                    </div>
+                  </div>
+                  <div class="aside-point">
+                    <span>✓</span>
+                    <div>
+                      <b>Be clear and specific</b
+                      ><small
+                        >Location and details help explain the issue.</small
+                      >
+                    </div>
+                  </div>
+                </div>
+                <div class="aside-card">
+                  <div class="aside-mini-title">WHAT HAPPENS NEXT?</div>
+                  <div class="mini-timeline">
+                    <div class="mini-step">
+                      <i>1</i
+                      ><span
+                        ><b>Submitted</b
+                        ><small>Your request is registered.</small></span
+                      >
+                    </div>
+                    <div class="mini-step">
+                      <i>2</i
+                      ><span
+                        ><b>Under review</b
+                        ><small>An officer updates the status.</small></span
+                      >
+                    </div>
+                    <div class="mini-step">
+                      <i>3</i
+                      ><span
+                        ><b>Resolved</b
+                        ><small>Resolution details are recorded.</small></span
+                      >
+                    </div>
+                  </div>
+                </div>
+              </aside>
+            </div>
+          </section>
+
+          <section class="view" id="view-track">
+            <div class="page-heading">
+              <div>
+                <h1>Track your grievance</h1>
+                <p>
+                  Enter the reference ID you received after submitting a
+                  request.
+                </p>
+              </div>
+            </div>
+            <div class="track-hero panel">
+              <div class="track-icon">
+                <svg class="ui-icon" aria-hidden="true">
+                  <use href="#icon-search" />
+                </svg>
+              </div>
+              <h2>Every update, in one place.</h2>
+              <p>
+                Use your unique reference number to view the latest status and
+                submission details.
+              </p>
+              <form id="trackForm" class="track-search">
+                <label class="sr-only" for="trackId">Reference ID</label
+                ><span>⌕</span
+                ><input
+                  id="trackId"
+                  placeholder="Enter reference ID (e.g. JSV-2026-0001)"
+                  required
+                /><button class="btn btn-primary" type="submit">
+                  Track request <span>→</span>
+                </button>
+              </form>
+              <div class="track-hint">
+                Tip: Your reference ID starts with <b>JSV-</b>.
+              </div>
+            </div>
+            <div
+              id="trackResult"
+              class="panel track-result hidden"
+              aria-live="polite"
+            ></div>
+            <div class="track-help-grid">
+              <div class="panel help-tile">
+                <span class="tile-icon">⌁</span>
+                <h3>Lost your reference ID?</h3>
+                <p>
+                  Reference IDs are shown after submission and remembered on
+                  this device.
+                </p>
+                <button class="link-button" data-view="home">
+                  View recent requests →
+                </button>
+              </div>
+              <div class="panel help-tile">
+                <span class="tile-icon">ⓘ</span>
+                <h3>Cloud-backed tracking</h3>
+                <p>
+                  Status and history are retrieved securely from the live
+                  database.
+                </p>
+                <button class="link-button" data-view="submit">
+                  Create a request →
+                </button>
+              </div>
+            </div>
+          </section>
+
+          <section class="view" id="view-directory">
+            <div class="page-heading">
+              <div>
+                <h1>Find the right service</h1>
+                <p>
+                  Browse common public service categories and learn what
+                  information to include.
+                </p>
+              </div>
+            </div>
+            <div class="directory-tools">
+              <label class="directory-search"
+                ><span>⌕</span
+                ><input
+                  id="serviceSearch"
+                  placeholder="Search services or keywords..." /></label
+              ><span class="results-label" id="serviceCount"
+                >6 service areas</span
+              >
+            </div>
+            <div class="service-grid" id="serviceGrid"></div>
+            <div class="source-note">
+              <span>ⓘ</span>
+              <p>
+                <b>Sample service directory.</b> This student prototype provides
+                general guidance only. Confirm procedures and contact details
+                with the relevant official department.
+              </p>
+            </div>
+          </section>
+
+          <section class="view" id="view-admin">
+            <section class="panel admin-login" id="adminLoginPanel">
+              <div class="admin-login-icon">
+                <svg class="ui-icon" aria-hidden="true">
+                  <use href="#icon-clipboard" />
+                </svg>
+              </div>
+              <h1>Officer sign in</h1>
+              <p>
+                Enter the officer password to review cases and update their
+                status.
+              </p>
+              <form id="adminLoginForm">
+                <label for="adminPassword">Officer password</label
+                ><input
+                  id="adminPassword"
+                  name="password"
+                  type="password"
+                  autocomplete="current-password"
+                  required
+                /><button class="btn btn-primary" type="submit">
+                  Sign in securely
+                </button>
+                <p
+                  class="form-error"
+                  id="adminLoginError"
+                  aria-live="polite"
+                ></p>
+              </form>
+            </section>
+            <div class="hidden" id="adminContent">
+              <div class="page-heading admin-heading">
+                <div>
+                  <h1>Officer dashboard</h1>
+                  <p>
+                    Review cases, update their status, and keep the case
+                    lifecycle visible.
+                  </p>
+                </div>
+                <div class="admin-actions">
+                  <button class="btn btn-outline" id="adminLogout">
+                    Sign out</button
+                  ><button class="btn btn-outline" id="exportCsv">
+                    <svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-download" />
+                    </svg>
+                    Export CSV
+                  </button>
+                </div>
+              </div>
+              <div class="admin-stat-grid">
+                <div class="admin-stat">
+                  <span class="admin-stat-icon blue-bg"
+                    ><svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-clipboard" /></svg
+                  ></span>
+                  <div>
+                    <small>Total cases</small><strong id="adminTotal">0</strong>
+                  </div>
+                </div>
+                <div class="admin-stat">
+                  <span class="admin-stat-icon amber-bg"
+                    ><svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-clock" /></svg
+                  ></span>
+                  <div>
+                    <small>Open / in progress</small
+                    ><strong id="adminOpen">0</strong>
+                  </div>
+                </div>
+                <div class="admin-stat">
+                  <span class="admin-stat-icon green-bg"
+                    ><svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-check" /></svg
+                  ></span>
+                  <div>
+                    <small>Resolved</small><strong id="adminResolved">0</strong>
+                  </div>
+                </div>
+                <div class="admin-stat">
+                  <span class="admin-stat-icon red-bg">!</span>
+                  <div>
+                    <small>High priority</small
+                    ><strong id="adminHigh">0</strong>
+                  </div>
+                </div>
+              </div>
+              <section class="panel cases-panel">
+                <div class="panel-heading admin-panel-heading">
+                  <div>
+                    <h2>All grievances</h2>
+                  </div>
+                  <button class="btn btn-primary btn-sm" data-view="submit">
+                    <svg class="ui-icon" aria-hidden="true">
+                      <use href="#icon-plus" />
+                    </svg>
+                    New case
+                  </button>
+                </div>
+                <div class="case-filters">
+                  <label class="directory-search compact-search"
+                    ><span>⌕</span
+                    ><input
+                      id="caseSearch"
+                      placeholder="Search ID, title or area..." /></label
+                  ><select id="statusFilter" aria-label="Filter by status">
+                    <option value="all">All statuses</option>
+                    <option>Submitted</option>
+                    <option>In Progress</option>
+                    <option>Awaiting Information</option>
+                    <option>Resolved</option>
+                    <option>Closed</option></select
+                  ><select id="categoryFilter" aria-label="Filter by category">
+                    <option value="all">All categories</option>
+                    <option>Roads & Infrastructure</option>
+                    <option>Water Supply</option>
+                    <option>Sanitation & Waste</option>
+                    <option>Street Lighting</option>
+                    <option>Public Health</option>
+                    <option>Other Public Services</option>
+                  </select>
+                </div>
+                <div class="table-wrap">
+                  <table class="data-table admin-table">
+                    <thead>
+                      <tr>
+                        <th>CASE DETAILS</th>
+                        <th>CATEGORY</th>
+                        <th>AREA</th>
+                        <th>DATE</th>
+                        <th>PRIORITY</th>
+                        <th>STATUS</th>
+                        <th>UPDATE</th>
+                      </tr>
+                    </thead>
+                    <tbody id="caseRows"></tbody>
+                  </table>
+                </div>
+                <div class="empty-state hidden" id="caseEmpty">
+                  <span>⌕</span><strong>No matching cases</strong>
+                  <p>Try changing your search or filters.</p>
+                </div>
+              </section>
+              <div class="admin-footnote">
+                <span>ⓘ</span> Protected officer access. This independent
+                prototype is not connected to a government department.
+              </div>
+            </div>
           </section>
         </div>
-        <div class="trust-row"><span>✦ Built around citizen-first service</span><span>✓ Clear status updates</span><span>✓ Reference-based tracking</span><span>✓ Demo data only</span></div>
-      </section>
-
-      <section class="view" id="view-submit">
-        <div class="page-heading"><div><div class="section-kicker">CITIZEN SERVICES / NEW REQUEST</div><h1>Raise a grievance</h1><p>Share the details below. We’ll create a reference ID so you can follow the progress.</p></div><div class="heading-mark">01 <span>/ 03</span></div></div>
-        <div class="form-layout">
-          <form class="panel grievance-form" id="grievanceForm">
-            <div class="form-section-title"><span class="step-number">1</span><div><h3>What is the issue?</h3><p>Give your request a clear title and category.</p></div></div>
-            <div class="field"><label for="subject">Grievance title <span>*</span></label><input id="subject" name="subject" maxlength="100" required placeholder="e.g. Streetlight not working on 4th Avenue"><small>Keep it short and specific.</small></div>
-            <div class="field-row"><div class="field"><label for="category">Service category <span>*</span></label><select id="category" name="category" required><option value="">Select a category</option><option>Roads & Infrastructure</option><option>Water Supply</option><option>Sanitation & Waste</option><option>Street Lighting</option><option>Public Health</option><option>Other Public Services</option></select></div><div class="field"><label for="area">Area / locality <span>*</span></label><input id="area" name="area" maxlength="100" required placeholder="e.g. Madhapur, Hyderabad"></div></div>
-            <div class="field"><label for="description">Describe the issue <span>*</span></label><textarea id="description" name="description" rows="5" maxlength="1200" required placeholder="Tell us what happened, where it happened, and when you first noticed it."></textarea><div class="field-bottom"><small>Please avoid sharing sensitive personal information.</small><small id="charCount">0 / 1200</small></div></div>
-            <div class="form-section-title section-spaced"><span class="step-number">2</span><div><h3>How can we follow up?</h3><p>Optional contact details for this demonstration.</p></div></div>
-            <div class="field-row"><div class="field"><label for="citizenName">Your name <small class="optional">(optional)</small></label><input id="citizenName" name="citizenName" maxlength="80" placeholder="Name"></div><div class="field"><label for="contact">Contact number <small class="optional">(optional)</small></label><input id="contact" name="contact" inputmode="tel" maxlength="15" placeholder="Phone number"></div></div>
-            <div class="form-footer"><span class="required-note"><span>*</span> Required fields</span><button type="reset" class="btn btn-outline">Clear form</button><button type="submit" class="btn btn-primary">Submit grievance <span>→</span></button></div>
-          </form>
-          <aside class="form-aside"><div class="aside-card dark-aside"><span class="aside-icon">✦</span><h3>Your concern deserves to be heard.</h3><p>Every submission receives a unique reference ID to make follow-up simpler.</p><div class="aside-divider"></div><div class="aside-point"><span>✓</span><div><b>Keep your reference ID</b><small>You’ll need it to track your request.</small></div></div><div class="aside-point"><span>✓</span><div><b>Be clear and specific</b><small>Location and details help explain the issue.</small></div></div></div>
-            <div class="aside-card"><div class="aside-mini-title">WHAT HAPPENS NEXT?</div><div class="mini-timeline"><div class="mini-step"><i>1</i><span><b>Submitted</b><small>Your request is registered.</small></span></div><div class="mini-step"><i>2</i><span><b>Under review</b><small>An officer updates the status.</small></span></div><div class="mini-step"><i>3</i><span><b>Resolved</b><small>Resolution details are recorded.</small></span></div></div></div>
-          </aside>
-        </div>
-      </section>
-
-      <section class="view" id="view-track">
-        <div class="page-heading"><div><div class="section-kicker">CITIZEN SERVICES / TRACKING</div><h1>Track your grievance</h1><p>Enter the reference ID you received after submitting a request.</p></div></div>
-        <div class="track-hero panel"><div class="track-icon">◎</div><h2>Every update, in one place.</h2><p>Use your unique reference number to view the latest status and submission details.</p>
-          <form id="trackForm" class="track-search"><label class="sr-only" for="trackId">Reference ID</label><span>⌕</span><input id="trackId" placeholder="Enter reference ID (e.g. JSV-2026-0001)" required><button class="btn btn-primary" type="submit">Track request <span>→</span></button></form>
-          <div class="track-hint">Tip: Your reference ID starts with <b>JSV-</b>.</div>
-        </div>
-        <div id="trackResult" class="panel track-result hidden"></div>
-        <div class="track-help-grid"><div class="panel help-tile"><span class="tile-icon">⌁</span><h3>Lost your reference ID?</h3><p>In this demo, open the Officer dashboard to view all sample requests.</p><button class="link-button" data-view="admin">Open dashboard →</button></div><div class="panel help-tile"><span class="tile-icon">ⓘ</span><h3>Demo environment</h3><p>Requests are stored in this browser only until a live database is connected.</p><button class="link-button" data-view="submit">Create a request →</button></div></div>
-      </section>
-
-      <section class="view" id="view-directory">
-        <div class="page-heading"><div><div class="section-kicker">CITIZEN SERVICES / DIRECTORY</div><h1>Find the right service</h1><p>Browse common public service categories and learn what information to include.</p></div></div>
-        <div class="directory-tools"><label class="directory-search"><span>⌕</span><input id="serviceSearch" placeholder="Search services or keywords..."></label><span class="results-label" id="serviceCount">6 service areas</span></div>
-        <div class="service-grid" id="serviceGrid"></div>
-        <div class="source-note"><span>ⓘ</span><p><b>Sample service directory.</b> This student prototype provides general guidance only. Confirm procedures and contact details with the relevant official department.</p></div>
-      </section>
-
-      <section class="view" id="view-admin">
-        <div class="page-heading admin-heading"><div><div class="section-kicker">MANAGEMENT / CASE OPERATIONS</div><h1>Officer dashboard</h1><p>Review demo cases, update their status, and keep the case lifecycle visible.</p></div><button class="btn btn-outline" id="exportCsv">↧ Export CSV</button></div>
-        <div class="admin-stat-grid"><div class="admin-stat"><span class="admin-stat-icon blue-bg">▤</span><div><small>Total cases</small><strong id="adminTotal">0</strong></div></div><div class="admin-stat"><span class="admin-stat-icon amber-bg">◷</span><div><small>Open / in progress</small><strong id="adminOpen">0</strong></div></div><div class="admin-stat"><span class="admin-stat-icon green-bg">✓</span><div><small>Resolved</small><strong id="adminResolved">0</strong></div></div><div class="admin-stat"><span class="admin-stat-icon red-bg">!</span><div><small>High priority</small><strong id="adminHigh">0</strong></div></div></div>
-        <section class="panel cases-panel"><div class="panel-heading admin-panel-heading"><div><div class="section-kicker">CASE REGISTER</div><h3>All grievances</h3></div><button class="btn btn-primary btn-sm" data-view="submit">＋ New sample case</button></div>
-          <div class="case-filters"><label class="directory-search compact-search"><span>⌕</span><input id="caseSearch" placeholder="Search ID, title or area..."></label><select id="statusFilter" aria-label="Filter by status"><option value="all">All statuses</option><option>Submitted</option><option>In Progress</option><option>Awaiting Information</option><option>Resolved</option><option>Closed</option></select><select id="categoryFilter" aria-label="Filter by category"><option value="all">All categories</option><option>Roads & Infrastructure</option><option>Water Supply</option><option>Sanitation & Waste</option><option>Street Lighting</option><option>Public Health</option><option>Other Public Services</option></select></div>
-          <div class="table-wrap"><table class="data-table admin-table"><thead><tr><th>CASE DETAILS</th><th>CATEGORY</th><th>AREA</th><th>DATE</th><th>PRIORITY</th><th>STATUS</th><th>UPDATE</th></tr></thead><tbody id="caseRows"></tbody></table></div>
-          <div class="empty-state hidden" id="caseEmpty"><span>⌕</span><strong>No matching cases</strong><p>Try changing your search or filters.</p></div>
-        </section>
-        <div class="admin-footnote"><span>ⓘ</span> Demo mode: status changes are saved locally in this browser. This dashboard is not connected to a real government department.</div>
-      </section>
+        <footer class="footer">
+          <span>© 2026 JanSeva Prototype</span
+          ><span
+            ><a href="/privacy.html">Privacy notice</a> <b>•</b> Not an official
+            government portal</span
+          >
+        </footer>
+      </main>
     </div>
-    <footer class="footer"><span>© 2026 JanSeva Prototype</span><span>Designed for transparent public service <b>•</b> Not an official government portal</span></footer>
-  </main>
-</div>
-<div class="toast-region" id="toastRegion" aria-live="polite"></div>
-<div class="modal-backdrop hidden" id="successModal"><div class="success-modal"><button class="modal-close" id="closeModal" aria-label="Close">×</button><div class="success-mark">✓</div><div class="section-kicker">REQUEST REGISTERED</div><h2>Your voice is on record.</h2><p>Your demo grievance has been saved. Keep this reference ID to check its status.</p><div class="reference-box"><small>YOUR REFERENCE ID</small><strong id="successRef">JSV-2026-0001</strong><button id="copyRef" class="copy-button">Copy ID</button></div><button class="btn btn-primary full-btn" id="modalTrack">Track this grievance →</button><button class="link-button centered" id="modalHome">Back to overview</button><small class="modal-disclaimer">Demo only — not submitted to a real government department.</small></div></div>
-<script src="app.js"></script>
-</body>
+    <div class="toast-region" id="toastRegion" aria-live="polite"></div>
+    <div class="modal-backdrop hidden" id="successModal">
+      <div
+        class="success-modal"
+        role="dialog"
+        aria-modal="true"
+        aria-labelledby="successTitle"
+        aria-describedby="successDescription"
+      >
+        <button class="modal-close" id="closeModal" aria-label="Close">
+          <svg class="ui-icon" aria-hidden="true">
+            <use href="#icon-close" />
+          </svg>
+        </button>
+        <div class="success-mark">
+          <svg class="ui-icon" aria-hidden="true">
+            <use href="#icon-check" />
+          </svg>
+        </div>
+        <h2 id="successTitle">Your voice is on record.</h2>
+        <p id="successDescription">
+          Your grievance has been stored. Keep this reference ID to check its
+          status.
+        </p>
+        <div class="reference-box">
+          <small>YOUR REFERENCE ID</small
+          ><strong id="successRef">JSV-2026-00000000</strong
+          ><button id="copyRef" class="copy-button">Copy ID</button>
+        </div>
+        <button class="btn btn-primary full-btn" id="modalTrack">
+          Track this grievance →</button
+        ><button class="link-button centered" id="modalHome">
+          Back to overview</button
+        ><small class="modal-disclaimer"
+          >Independent prototype — not submitted to a government
+          department.</small
+        >
+      </div>
+    </div>
+    <script src="app.js"></script>
+  </body>
 </html>
